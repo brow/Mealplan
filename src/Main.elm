@@ -3,19 +3,27 @@ module Main exposing (Model, Msg(..), init, main, update, view)
 import Browser
 import Html as H
 import Html.Events as H
+import Parser exposing (Parser)
+import Result
 
 
 
 ---- MODEL ----
 
 
-type alias Model =
+type alias Recipe =
     {}
+
+
+type alias Model =
+    Result (List Parser.DeadEnd) Recipe
 
 
 init : ( Model, Cmd Msg )
 init =
-    ( {}, Cmd.none )
+    ( Parser.run parser ""
+    , Cmd.none
+    )
 
 
 
@@ -38,7 +46,10 @@ update msg model =
 view : Model -> H.Html Msg
 view model =
     H.div []
-        [ H.textarea [ H.onInput Input ] []
+        [ H.div []
+            [ H.textarea [ H.onInput Input ] [] ]
+        , H.div []
+            [ H.text <| Debug.toString model ]
         ]
 
 
@@ -54,3 +65,8 @@ main =
         , update = update
         , subscriptions = always Sub.none
         }
+
+
+parser : Parser Recipe
+parser =
+    Parser.succeed {}
