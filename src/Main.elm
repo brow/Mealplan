@@ -2,6 +2,7 @@ module Main exposing (Model, Msg(..), init, main, update, view)
 
 import Browser
 import Html as H
+import Html.Events as H
 
 
 
@@ -22,7 +23,7 @@ init =
 
 
 type Msg
-    = NoOp
+    = Input String
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -37,7 +38,9 @@ update msg model =
 view : Model -> H.Html Msg
 view model =
     H.div []
-        [ H.textarea [] []
+        [ H.textarea
+            [ H.onInput Input ]
+            []
         ]
 
 
