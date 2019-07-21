@@ -38,9 +38,7 @@ update msg model =
 view : Model -> H.Html Msg
 view model =
     H.div []
-        [ H.textarea
-            [ H.onInput Input ]
-            []
+        [ H.textarea [ H.onInput Input ] []
         ]
 
 
