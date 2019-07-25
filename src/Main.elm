@@ -85,40 +85,8 @@ parser =
             )
 
 
-
---         Parser.sequence
---             { start = ""
---             , separator = "\n"
---             , end = ""
---             , spaces = Parser.chompWhile (\c -> c == ' ')
---             , item = ingredientParser
---             , trailing = Parser.Optional
---             }
---
-
-
 ingredientParser : Parser String
 ingredientParser =
     Parser.succeed identity
         |= Parser.getChompedString (Parser.chompWhile (\c -> c /= '\n'))
         |. Parser.chompWhile (\c -> c == '\n')
-
-
-
--- |. Parser.chompIf (\c -> c == '\n')
--- |> Parser.andThen
---     (\s ->
---         if String.isEmpty s then
---             Parser.problem "hi"
---
---         else
---             Parser.succeed s
---     )
--- |> Parser.andThen
---     (\s ->
---         if String.isEmpty s then
---             Parser.problem "hi"
---
---         else
---             Parser.succeed s
---     )
