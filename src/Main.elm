@@ -3,7 +3,7 @@ module Main exposing (Model, Msg(..), init, main, update, view)
 import Browser
 import Html as H
 import Html.Events as H
-import Parser exposing ((|.), (|=), Parser)
+import Parser as P exposing ((|.), (|=), Parser)
 import Result
 
 
@@ -16,12 +16,12 @@ type alias Recipe =
 
 
 type alias Model =
-    Result (List Parser.DeadEnd) Recipe
+    Result (List P.DeadEnd) Recipe
 
 
 init : ( Model, Cmd Msg )
 init =
-    ( Parser.run parser ""
+    ( P.run parser ""
     , Cmd.none
     )
 
@@ -38,7 +38,7 @@ update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     ( case msg of
         Input string ->
-            Parser.run parser string
+            P.run parser string
     , Cmd.none
     )
 
@@ -73,20 +73,20 @@ main =
 
 parser : Parser Recipe
 parser =
-    Parser.map Recipe <|
-        Parser.loop []
+    P.map Recipe <|
+        P.loop []
             (\ingredients ->
-                Parser.oneOf
-                    [ Parser.end
-                        |> Parser.map (\_ -> Parser.Done ingredients)
+                P.oneOf
+                    [ P.end
+                        |> P.map (\_ -> P.Done (List.reverse ingredients))
                     , ingredientParser
-                        |> Parser.map (\i -> Parser.Loop (i :: ingredients))
+                        |> P.map (\i -> P.Loop (i :: ingredients))
                     ]
             )
 
 
 ingredientParser : Parser String
 ingredientParser =
-    Parser.succeed identity
-        |= Parser.getChompedString (Parser.chompWhile (\c -> c /= '\n'))
-        |. Parser.chompWhile (\c -> c == '\n')
+    P.succeed identity
+        |= P.getChompedString (P.chompWhile (\c -> c /= '\n'))
+        |. P.chompWhile (\c -> c == '\n')
