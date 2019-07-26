@@ -12,7 +12,14 @@ import Result
 
 
 type alias Recipe =
-    { ingredients : List String }
+    { ingredients : List Ingredient }
+
+
+type alias Ingredient =
+    { quantity : String
+    , name : String
+    , notes : String
+    }
 
 
 type alias Model =
@@ -53,7 +60,18 @@ view model =
         [ H.div []
             [ H.textarea [ H.onInput Input ] [] ]
         , H.div []
-            [ H.text <| Debug.toString model ]
+            [ case model of
+                Err err ->
+                    H.text (Debug.toString err)
+
+                Ok recipe ->
+                    H.ul [] <|
+                        List.map
+                            (\ingredient ->
+                                H.li [] [ H.text ingredient.quantity ]
+                            )
+                            recipe.ingredients
+            ]
         ]
 
 
@@ -85,8 +103,19 @@ parser =
             )
 
 
-ingredientParser : Parser String
+ingredientParser : Parser Ingredient
 ingredientParser =
-    P.succeed identity
-        |= P.getChompedString (P.chompWhile (\c -> c /= '\n'))
+    P.succeed Ingredient
+        |= ingredientPartParser
+        |. P.token ", "
+        |= ingredientPartParser
+        |. P.token ", "
+        |= ingredientPartParser
+
+
+ingredientPartParser : Parser String
+ingredientPartParser =
+    (P.chompWhile (\c -> c /= ',' && c /= '\n')
+        |> P.getChompedString
+    )
         |. P.chompWhile (\c -> c == '\n')
