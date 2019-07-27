@@ -4,6 +4,8 @@ import Browser
 import File exposing (File)
 import File.Select
 import Html as H
+import Html.Attributes as H
+import Html.Events as H
 import Recipe exposing (Recipe)
 import Serialize
 import Task
@@ -17,18 +19,24 @@ type alias Model =
 init : ( Model, Cmd Msg )
 init =
     ( { recipes = [] }
-    , File.Select.files [] (\x xs -> SelectedFiles (x :: xs))
+    , Cmd.none
     )
 
 
 type Msg
-    = SelectedFiles (List File)
+    = Import
+    | SelectedFiles (List File)
     | LoadedFileContent String
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
+        Import ->
+            ( model
+            , File.Select.files [] (\x xs -> SelectedFiles (x :: xs))
+            )
+
         SelectedFiles files ->
             ( model
             , files
@@ -50,7 +58,11 @@ update msg model =
 
 view : Model -> H.Html Msg
 view model =
-    H.text "Hello, world!"
+    H.button
+        [ H.type_ "button"
+        , H.onClick Import
+        ]
+        [ H.text "Import" ]
 
 
 main : Program () Model Msg
