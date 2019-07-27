@@ -17,12 +17,16 @@ import Task
 
 
 type alias Model =
-    Result String Recipe
+    { recipes : List Recipe
+    , errors : List String
+    }
 
 
 init : ( Model, Cmd Msg )
 init =
-    ( Serialize.recipeFromString ""
+    ( { recipes = []
+      , errors = []
+      }
     , Cmd.none
     )
 
@@ -41,7 +45,12 @@ update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
         Input string ->
-            ( Serialize.recipeFromString string
+            ( case Serialize.recipeFromString string of
+                Ok recipe ->
+                    { model | recipes = [ recipe ], errors = [] }
+
+                Err error ->
+                    { model | errors = [ error ], recipes = [] }
             , Cmd.none
             )
 
@@ -77,7 +86,8 @@ viewIngredient ingredient =
 viewRecipe : Recipe -> H.Html Msg
 viewRecipe recipe =
     H.div []
-        [ H.h1 [] [ H.text recipe.title ]
+        [ H.hr [] []
+        , H.h1 [] [ H.text recipe.title ]
         , H.h2 [] [ H.text "Ingredients" ]
         , H.ul [] <|
             List.map
@@ -99,14 +109,8 @@ view model =
                 ]
                 [ H.text "Import" ]
             ]
-        , H.div []
-            [ case model of
-                Err err ->
-                    H.text (Debug.toString err)
-
-                Ok recipe ->
-                    viewRecipe recipe
-            ]
+        , H.div [] <|
+            List.map viewRecipe model.recipes
         ]
 
 
