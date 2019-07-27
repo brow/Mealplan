@@ -7,11 +7,11 @@ import Result
 
 recipeFromString : String -> Result String Recipe
 recipeFromString =
-    P.run parser >> Result.mapError Debug.toString
+    P.run recipe >> Result.mapError Debug.toString
 
 
-parser : Parser Recipe
-parser =
+recipe : Parser Recipe
+recipe =
     P.map Recipe <|
         P.loop []
             (\ingredients ->
