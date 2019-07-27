@@ -18,28 +18,28 @@ recipe =
                 P.oneOf
                     [ P.end
                         |> P.map (\_ -> P.Done (List.reverse ingredients))
-                    , ingredientParser
+                    , ingredient
                         |> P.map (\i -> P.Loop (i :: ingredients))
                     ]
             )
 
 
-ingredientParser : Parser Recipe.Ingredient
-ingredientParser =
+ingredient : Parser Recipe.Ingredient
+ingredient =
     P.succeed Recipe.Ingredient
-        |= ingredientPartParser
+        |= string
         |. P.token ", "
-        |= ingredientPartParser
+        |= string
         |= (try <|
                 P.succeed identity
                     |. P.token ", "
-                    |= ingredientPartParser
+                    |= string
            )
         |. try (P.token "\n")
 
 
-ingredientPartParser : Parser String
-ingredientPartParser =
+string : Parser String
+string =
     P.getChompedString <|
         P.chompWhile (\c -> c /= ',' && c /= '\n')
 
