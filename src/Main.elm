@@ -79,12 +79,14 @@ view : Model -> H.Html Msg
 view model =
     H.div []
         [ H.textarea [ H.onInput Input ] []
-        , case model of
-            Err err ->
-                H.text (Debug.toString err)
+        , H.div []
+            [ case model of
+                Err err ->
+                    H.text (Debug.toString err)
 
-            Ok recipe ->
-                viewRecipe recipe
+                Ok recipe ->
+                    viewRecipe recipe
+            ]
         ]
 
 
