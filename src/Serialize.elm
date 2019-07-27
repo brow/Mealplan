@@ -16,13 +16,13 @@ recipe =
         |= P.loop []
             (\ingredients ->
                 P.oneOf
-                    [ P.end
+                    [ P.token "\n"
                         |> P.map (\_ -> P.Done (List.reverse ingredients))
                     , ingredient
                         |> P.map (\i -> P.Loop (i :: ingredients))
                     ]
             )
-        |= P.succeed "<some instructions>"
+        |= P.getChompedString (P.chompWhile (\_ -> True))
 
 
 ingredient : Parser Recipe.Ingredient
@@ -36,7 +36,7 @@ ingredient =
                     |. P.token ", "
                     |= string
            )
-        |. try (P.token "\n")
+        |. P.token "\n"
 
 
 string : Parser String
