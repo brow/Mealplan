@@ -44,38 +44,47 @@ update msg model =
 ---- VIEW ----
 
 
+viewRecipe : Recipe -> H.Html Msg
+viewRecipe recipe =
+    H.div []
+        [ H.h2 [] [ H.text "Ingredients" ]
+        , H.ul [] <|
+            List.map
+                (\ingredient ->
+                    H.li []
+                        ([ H.b []
+                            [ H.text ingredient.quantity
+                            , H.text " "
+                            , H.b [] [ H.text ingredient.name ]
+                            ]
+                         ]
+                            ++ (case ingredient.notes of
+                                    Just notes ->
+                                        [ H.text ", "
+                                        , H.text notes
+                                        ]
+
+                                    Nothing ->
+                                        []
+                               )
+                        )
+                )
+                recipe.ingredients
+        , H.h2 [] [ H.text "Instructions" ]
+        , H.text recipe.instructions
+        ]
+
+
 view : Model -> H.Html Msg
 view model =
     H.div []
         [ H.textarea [ H.onInput Input ] []
-        , H.h2 [] [ H.text "Ingredients" ]
         , case model of
             Err err ->
                 H.text (Debug.toString err)
 
             Ok recipe ->
-                H.ul [] <|
-                    List.map
-                        (\ingredient ->
-                            H.li []
-                                ([ H.b []
-                                    [ H.text ingredient.quantity
-                                    , H.text " "
-                                    , H.b [] [ H.text ingredient.name ]
-                                    ]
-                                 ]
-                                    ++ (case ingredient.notes of
-                                            Just notes ->
-                                                [ H.text ", "
-                                                , H.text notes
-                                                ]
-
-                                            Nothing ->
-                                                []
-                                       )
-                                )
-                        )
-                        recipe.ingredients
+                viewRecipe recipe
         ]
 
 

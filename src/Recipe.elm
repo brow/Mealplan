@@ -2,7 +2,9 @@ module Recipe exposing (Ingredient, Recipe)
 
 
 type alias Recipe =
-    { ingredients : List Ingredient }
+    { ingredients : List Ingredient
+    , instructions : String
+    }
 
 
 type alias Ingredient =

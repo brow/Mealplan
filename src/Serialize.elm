@@ -12,8 +12,8 @@ recipeFromString =
 
 recipe : Parser Recipe
 recipe =
-    P.map Recipe <|
-        P.loop []
+    P.succeed Recipe
+        |= P.loop []
             (\ingredients ->
                 P.oneOf
                     [ P.end
@@ -22,6 +22,7 @@ recipe =
                         |> P.map (\i -> P.Loop (i :: ingredients))
                     ]
             )
+        |= P.succeed "<some instructions>"
 
 
 ingredient : Parser Recipe.Ingredient
