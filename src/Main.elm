@@ -1,6 +1,6 @@
 module Main exposing (main)
 
-import Editor
+import Planner
 
 
 
@@ -8,4 +8,4 @@ import Editor
 
 
 main =
-    Editor.main
+    Planner.main

@@ -12,10 +12,6 @@ import Serialize
 import Task
 
 
-
----- MODEL ----
-
-
 type alias Model =
     { recipes : List Recipe
     , errors : List String
@@ -29,10 +25,6 @@ init =
       }
     , Cmd.none
     )
-
-
-
----- UPDATE ----
 
 
 type Msg
