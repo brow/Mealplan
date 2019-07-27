@@ -44,31 +44,27 @@ update msg model =
 ---- VIEW ----
 
 
+viewIngredient : Recipe.Ingredient -> H.Html Msg
+viewIngredient ingredient =
+    H.li []
+        [ (ingredient.quantity ++ " " ++ ingredient.name)
+            |> H.text
+            |> List.singleton
+            |> H.b []
+        , ingredient.notes
+            |> Maybe.map (\x -> ", " ++ x)
+            |> Maybe.withDefault ""
+            |> H.text
+        ]
+
+
 viewRecipe : Recipe -> H.Html Msg
 viewRecipe recipe =
     H.div []
         [ H.h2 [] [ H.text "Ingredients" ]
         , H.ul [] <|
             List.map
-                (\ingredient ->
-                    H.li []
-                        ([ H.b []
-                            [ H.text ingredient.quantity
-                            , H.text " "
-                            , H.b [] [ H.text ingredient.name ]
-                            ]
-                         ]
-                            ++ (case ingredient.notes of
-                                    Just notes ->
-                                        [ H.text ", "
-                                        , H.text notes
-                                        ]
-
-                                    Nothing ->
-                                        []
-                               )
-                        )
-                )
+                viewIngredient
                 recipe.ingredients
         , H.h2 [] [ H.text "Instructions" ]
         , H.text recipe.instructions
