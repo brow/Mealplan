@@ -38,7 +38,8 @@ init =
 type Msg
     = Input String
     | Import
-    | SelectedFiles File (List File)
+    | SelectedFiles (List File)
+    | LoadedFileContent String
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -56,12 +57,25 @@ update msg model =
 
         Import ->
             ( model
-            , File.Select.files [] SelectedFiles
+            , File.Select.files [] (\x xs -> SelectedFiles (x :: xs))
             )
 
-        SelectedFiles first others ->
+        SelectedFiles files ->
             ( model
-            , Task.perform Input (File.toString first)
+            , files
+                |> List.map
+                    (Task.perform LoadedFileContent << File.toString)
+                |> Cmd.batch
+            )
+
+        LoadedFileContent content ->
+            ( case Serialize.recipeFromString content of
+                Ok recipe ->
+                    { model | recipes = recipe :: model.recipes }
+
+                Err error ->
+                    { model | errors = error :: model.errors }
+            , Cmd.none
             )
 
 
