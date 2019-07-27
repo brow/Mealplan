@@ -13,6 +13,8 @@ recipeFromString =
 recipe : Parser Recipe
 recipe =
     P.succeed Recipe
+        |= P.getChompedString (P.chompWhile (\c -> c /= '\n'))
+        |. P.token "\n\n"
         |= P.loop []
             (\ingredients ->
                 P.oneOf

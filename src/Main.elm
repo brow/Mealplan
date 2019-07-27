@@ -77,7 +77,8 @@ viewIngredient ingredient =
 viewRecipe : Recipe -> H.Html Msg
 viewRecipe recipe =
     H.div []
-        [ H.h2 [] [ H.text "Ingredients" ]
+        [ H.h1 [] [ H.text recipe.title ]
+        , H.h2 [] [ H.text "Ingredients" ]
         , H.ul [] <|
             List.map
                 viewIngredient
