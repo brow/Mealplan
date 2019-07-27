@@ -3,9 +3,9 @@ module Main exposing (Model, Msg(..), init, main, update, view)
 import Browser
 import Html as H
 import Html.Events as H
-import Parser as P exposing ((|.), (|=), Parser)
 import Recipe exposing (Recipe)
 import Result
+import Serialize
 
 
 
@@ -13,12 +13,12 @@ import Result
 
 
 type alias Model =
-    Result (List P.DeadEnd) Recipe
+    Result String Recipe
 
 
 init : ( Model, Cmd Msg )
 init =
-    ( P.run parser ""
+    ( Serialize.recipeFromString ""
     , Cmd.none
     )
 
@@ -35,7 +35,7 @@ update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     ( case msg of
         Input string ->
-            P.run parser string
+            Serialize.recipeFromString string
     , Cmd.none
     )
 
@@ -91,45 +91,3 @@ main =
         , update = update
         , subscriptions = always Sub.none
         }
-
-
-parser : Parser Recipe
-parser =
-    P.map Recipe <|
-        P.loop []
-            (\ingredients ->
-                P.oneOf
-                    [ P.end
-                        |> P.map (\_ -> P.Done (List.reverse ingredients))
-                    , ingredientParser
-                        |> P.map (\i -> P.Loop (i :: ingredients))
-                    ]
-            )
-
-
-ingredientParser : Parser Recipe.Ingredient
-ingredientParser =
-    P.succeed Recipe.Ingredient
-        |= ingredientPartParser
-        |. P.token ", "
-        |= ingredientPartParser
-        |= (try <|
-                P.succeed identity
-                    |. P.token ", "
-                    |= ingredientPartParser
-           )
-        |. try (P.token "\n")
-
-
-ingredientPartParser : Parser String
-ingredientPartParser =
-    P.getChompedString <|
-        P.chompWhile (\c -> c /= ',' && c /= '\n')
-
-
-try : Parser a -> Parser (Maybe a)
-try aParser =
-    P.oneOf
-        [ P.map Just aParser
-        , P.succeed Nothing
-        ]
