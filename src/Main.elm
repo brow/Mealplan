@@ -57,37 +57,35 @@ update msg model =
 view : Model -> H.Html Msg
 view model =
     H.div []
-        [ H.div []
-            [ H.textarea [ H.onInput Input ] [] ]
-        , H.div []
-            [ case model of
-                Err err ->
-                    H.text (Debug.toString err)
+        [ H.textarea [ H.onInput Input ] []
+        , H.h2 [] [ H.text "Ingredients" ]
+        , case model of
+            Err err ->
+                H.text (Debug.toString err)
 
-                Ok recipe ->
-                    H.ul [] <|
-                        List.map
-                            (\ingredient ->
-                                H.li []
-                                    ([ H.b []
-                                        [ H.text ingredient.quantity
-                                        , H.text " "
-                                        , H.b [] [ H.text ingredient.name ]
-                                        ]
-                                     ]
-                                        ++ (case ingredient.notes of
-                                                Just notes ->
-                                                    [ H.text ", "
-                                                    , H.text notes
-                                                    ]
+            Ok recipe ->
+                H.ul [] <|
+                    List.map
+                        (\ingredient ->
+                            H.li []
+                                ([ H.b []
+                                    [ H.text ingredient.quantity
+                                    , H.text " "
+                                    , H.b [] [ H.text ingredient.name ]
+                                    ]
+                                 ]
+                                    ++ (case ingredient.notes of
+                                            Just notes ->
+                                                [ H.text ", "
+                                                , H.text notes
+                                                ]
 
-                                                Nothing ->
-                                                    []
-                                           )
-                                    )
-                            )
-                            recipe.ingredients
-            ]
+                                            Nothing ->
+                                                []
+                                       )
+                                )
+                        )
+                        recipe.ingredients
         ]
 
 
