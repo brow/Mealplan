@@ -4,22 +4,12 @@ import Browser
 import Html as H
 import Html.Events as H
 import Parser as P exposing ((|.), (|=), Parser)
+import Recipe exposing (Recipe)
 import Result
 
 
 
 ---- MODEL ----
-
-
-type alias Recipe =
-    { ingredients : List Ingredient }
-
-
-type alias Ingredient =
-    { quantity : String
-    , name : String
-    , notes : Maybe String
-    }
 
 
 type alias Model =
@@ -117,9 +107,9 @@ parser =
             )
 
 
-ingredientParser : Parser Ingredient
+ingredientParser : Parser Recipe.Ingredient
 ingredientParser =
-    P.succeed Ingredient
+    P.succeed Recipe.Ingredient
         |= ingredientPartParser
         |. P.token ", "
         |= ingredientPartParser
