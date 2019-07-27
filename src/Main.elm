@@ -69,9 +69,11 @@ view model =
                         List.map
                             (\ingredient ->
                                 H.li []
-                                    [ H.text ingredient.quantity
-                                    , H.text " "
-                                    , H.b [] [ H.text ingredient.name ]
+                                    [ H.b []
+                                        [ H.text ingredient.quantity
+                                        , H.text " "
+                                        , H.b [] [ H.text ingredient.name ]
+                                        ]
                                     , H.text ", "
                                     , H.text ingredient.notes
                                     ]
