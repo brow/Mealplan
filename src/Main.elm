@@ -18,7 +18,7 @@ type alias Recipe =
 type alias Ingredient =
     { quantity : String
     , name : String
-    , notes : String
+    , notes : Maybe String
     }
 
 
@@ -69,14 +69,22 @@ view model =
                         List.map
                             (\ingredient ->
                                 H.li []
-                                    [ H.b []
+                                    ([ H.b []
                                         [ H.text ingredient.quantity
                                         , H.text " "
                                         , H.b [] [ H.text ingredient.name ]
                                         ]
-                                    , H.text ", "
-                                    , H.text ingredient.notes
-                                    ]
+                                     ]
+                                        ++ (case ingredient.notes of
+                                                Just notes ->
+                                                    [ H.text ", "
+                                                    , H.text notes
+                                                    ]
+
+                                                Nothing ->
+                                                    []
+                                           )
+                                    )
                             )
                             recipe.ingredients
             ]
@@ -117,8 +125,11 @@ ingredientParser =
         |= ingredientPartParser
         |. P.token ", "
         |= ingredientPartParser
-        |. P.token ", "
-        |= ingredientPartParser
+        |= (try <|
+                P.succeed identity
+                    |. P.token ", "
+                    |= ingredientPartParser
+           )
         |. try (P.token "\n")
 
 
