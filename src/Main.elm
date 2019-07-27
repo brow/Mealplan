@@ -119,6 +119,7 @@ ingredientParser =
         |= ingredientPartParser
         |. P.token ", "
         |= ingredientPartParser
+        |. try (P.token "\n")
 
 
 ingredientPartParser : Parser String
@@ -126,4 +127,11 @@ ingredientPartParser =
     P.succeed identity
         |= P.getChompedString
             (P.chompWhile (\c -> c /= ',' && c /= '\n'))
-        |. P.chompWhile (\c -> c == '\n')
+
+
+try : Parser a -> Parser (Maybe a)
+try aParser =
+    P.oneOf
+        [ P.map Just aParser
+        , P.succeed Nothing
+        ]
