@@ -6,9 +6,8 @@ import Result
 
 
 recipeFromString : String -> Result String Recipe
-recipeFromString string =
-    P.run parser string
-        |> Result.mapError Debug.toString
+recipeFromString =
+    P.run parser >> Result.mapError Debug.toString
 
 
 parser : Parser Recipe
