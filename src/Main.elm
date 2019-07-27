@@ -124,9 +124,8 @@ ingredientParser =
 
 ingredientPartParser : Parser String
 ingredientPartParser =
-    P.succeed identity
-        |= P.getChompedString
-            (P.chompWhile (\c -> c /= ',' && c /= '\n'))
+    P.getChompedString <|
+        P.chompWhile (\c -> c /= ',' && c /= '\n')
 
 
 try : Parser a -> Parser (Maybe a)
