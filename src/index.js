@@ -1,5 +1,5 @@
 import './main.css';
-import { Elm } from './Main.elm';
+import { Elm } from './Editor.elm';
 import registerServiceWorker from './registerServiceWorker';
 
 Elm.Main.init({
