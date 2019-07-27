@@ -123,7 +123,7 @@ ingredientParser =
 
 ingredientPartParser : Parser String
 ingredientPartParser =
-    (P.chompWhile (\c -> c /= ',' && c /= '\n')
-        |> P.getChompedString
-    )
+    P.succeed identity
+        |= P.getChompedString
+            (P.chompWhile (\c -> c /= ',' && c /= '\n'))
         |. P.chompWhile (\c -> c == '\n')
