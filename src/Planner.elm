@@ -70,10 +70,10 @@ view model =
     in
     H.div []
         [ H.h2 [] [ H.text "Recipes" ]
-        , H.ul [] <|
-            List.map
-                (\recipe -> H.li [] [ H.text recipe.title ])
-                model.recipes
+        , model.recipes
+            |> List.sortBy (\recipe -> recipe.title)
+            |> List.map (\recipe -> H.li [] [ H.text recipe.title ])
+            |> H.ul []
         , H.button
             [ H.type_ "button"
             , H.onClick Import
