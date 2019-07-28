@@ -8,6 +8,7 @@ import Html.Attributes as H
 import Html.Events as H
 import Recipe exposing (Recipe)
 import Serialize
+import Set
 import Task
 
 
@@ -58,17 +59,31 @@ update msg model =
 
 view : Model -> H.Html Msg
 view model =
+    let
+        ingredients =
+            model.recipes
+                |> List.concatMap (\recipe -> recipe.ingredients)
+                |> List.map (\ingredient -> ingredient.name)
+                |> Set.fromList
+                |> Set.toList
+                |> List.sort
+    in
     H.div []
         [ H.h2 [] [ H.text "Recipes" ]
         , H.ul [] <|
             List.map
-                (\i -> H.li [] [ H.text i.title ])
+                (\recipe -> H.li [] [ H.text recipe.title ])
                 model.recipes
         , H.button
             [ H.type_ "button"
             , H.onClick Import
             ]
             [ H.text "Import" ]
+        , H.h2 [] [ H.text "Ingredients" ]
+        , H.ul [] <|
+            List.map
+                (\ingredient -> H.li [] [ H.text ingredient ])
+                ingredients
         ]
 
 
