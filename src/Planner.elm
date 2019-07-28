@@ -60,7 +60,7 @@ update msg model =
 
 view : Model -> H.Html Msg
 view model =
-    H.div []
+    H.div [ H.class "container" ]
         [ H.h2 [] [ H.text "Recipes" ]
         , model.recipes
             |> List.sortBy .title
