@@ -63,7 +63,7 @@ view model =
     H.div []
         [ H.h2 [] [ H.text "Recipes" ]
         , model.recipes
-            |> List.sortBy (\recipe -> recipe.title)
+            |> List.sortBy .title
             |> List.map (\recipe -> H.li [] [ H.text recipe.title ])
             |> H.ul []
         , H.button
@@ -80,7 +80,7 @@ view model =
                     H.li []
                         [ H.text ingredient
                         , quantities
-                            |> List.sortBy (\q -> q.recipeTitle)
+                            |> List.sortBy .recipeTitle
                             |> List.map
                                 (\q ->
                                     H.li [] [ H.text q.recipeTitle ]
