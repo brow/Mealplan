@@ -83,7 +83,13 @@ view model =
                             |> List.sortBy .recipeTitle
                             |> List.map
                                 (\q ->
-                                    H.li [] [ H.text q.recipeTitle ]
+                                    H.li []
+                                        [ H.text
+                                            (q.quantity
+                                                ++ " → "
+                                                ++ q.recipeTitle
+                                            )
+                                        ]
                                 )
                             |> H.ul []
                         ]
