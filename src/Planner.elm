@@ -58,11 +58,18 @@ update msg model =
 
 view : Model -> H.Html Msg
 view model =
-    H.button
-        [ H.type_ "button"
-        , H.onClick Import
+    H.div []
+        [ H.h2 [] [ H.text "Recipes" ]
+        , H.ul [] <|
+            List.map
+                (\i -> H.li [] [ H.text i.title ])
+                model.recipes
+        , H.button
+            [ H.type_ "button"
+            , H.onClick Import
+            ]
+            [ H.text "Import" ]
         ]
-        [ H.text "Import" ]
 
 
 main : Program () Model Msg
