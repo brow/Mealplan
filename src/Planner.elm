@@ -1,6 +1,7 @@
 module Planner exposing (main)
 
 import Browser
+import Dict exposing (Dict)
 import File exposing (File)
 import File.Select
 import Html as H
@@ -59,15 +60,6 @@ update msg model =
 
 view : Model -> H.Html Msg
 view model =
-    let
-        ingredients =
-            model.recipes
-                |> List.concatMap (\recipe -> recipe.ingredients)
-                |> List.map (\ingredient -> ingredient.name)
-                |> Set.fromList
-                |> Set.toList
-                |> List.sort
-    in
     H.div []
         [ H.h2 [] [ H.text "Recipes" ]
         , model.recipes
@@ -80,10 +72,23 @@ view model =
             ]
             [ H.text "Import" ]
         , H.h2 [] [ H.text "Ingredients" ]
-        , H.ul [] <|
-            List.map
-                (\ingredient -> H.li [] [ H.text ingredient ])
-                ingredients
+        , collectIngredients model
+            |> Dict.toList
+            |> List.sortBy Tuple.first
+            |> List.map
+                (\( ingredient, quantities ) ->
+                    H.li []
+                        [ H.text ingredient
+                        , quantities
+                            |> List.sortBy (\q -> q.recipeTitle)
+                            |> List.map
+                                (\q ->
+                                    H.li [] [ H.text q.recipeTitle ]
+                                )
+                            |> H.ul []
+                        ]
+                )
+            |> H.ul []
         ]
 
 
@@ -95,3 +100,39 @@ main =
         , update = update
         , subscriptions = always Sub.none
         }
+
+
+type alias QuanitityForRecipe =
+    { quantity : String
+    , recipeTitle : String
+    }
+
+
+collectIngredients : Model -> Dict String (List QuanitityForRecipe)
+collectIngredients model =
+    model.recipes
+        |> List.concatMap
+            (\recipe ->
+                List.map
+                    (\ingredient ->
+                        ( ingredient.name
+                        , { recipeTitle = recipe.title
+                          , quantity = ingredient.quantity
+                          }
+                        )
+                    )
+                    recipe.ingredients
+            )
+        |> List.foldl
+            (\( ingredient, quanitityForRecipe ) dict ->
+                let
+                    quantities =
+                        Dict.get ingredient dict
+                            |> Maybe.withDefault []
+                in
+                Dict.insert
+                    ingredient
+                    (quanitityForRecipe :: quantities)
+                    dict
+            )
+            Dict.empty
