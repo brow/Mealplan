@@ -72,7 +72,7 @@ view model =
             ]
             [ H.text "Import" ]
         , H.h2 [] [ H.text "Ingredients" ]
-        , collectIngredients model
+        , collectIngredients model.recipes
             |> Dict.toList
             |> List.sortBy Tuple.first
             |> List.map
@@ -108,9 +108,9 @@ type alias QuanitityForRecipe =
     }
 
 
-collectIngredients : Model -> Dict String (List QuanitityForRecipe)
-collectIngredients model =
-    model.recipes
+collectIngredients : List Recipe -> Dict String (List QuanitityForRecipe)
+collectIngredients recipes =
+    recipes
         |> List.concatMap
             (\recipe ->
                 List.map
