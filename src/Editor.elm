@@ -71,10 +71,6 @@ update msg model =
             )
 
 
-
----- VIEW ----
-
-
 viewIngredient : Recipe.Ingredient -> H.Html Msg
 viewIngredient ingredient =
     H.li []
@@ -118,10 +114,6 @@ view model =
         , H.div [] <|
             List.map viewRecipe model.recipes
         ]
-
-
-
----- PROGRAM ----
 
 
 main : Program () Model Msg
