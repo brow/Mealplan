@@ -9,14 +9,11 @@
   height: inherit;
 }
 
-body {
-    background-color: #002b36;
-    color: #93a1a1;
+:root {
+    --grid-maxWidth: 48rem;
 }
 
-textarea {
-    background-color: inherit;
-    color: inherit;
-    width: 300px;
-    height: 200px; 
+ul.toplevel {
+    list-style: none;
+    padding-left: 0;
 }
