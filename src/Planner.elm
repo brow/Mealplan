@@ -71,6 +71,7 @@ view model =
             , H.onClick Import
             ]
             [ H.text "Import" ]
+        , H.hr [] []
         , H.h2 [] [ H.text "Ingredients" ]
         , collectIngredients model.recipes
             |> Dict.toList
@@ -78,7 +79,7 @@ view model =
             |> List.map
                 (\( ingredient, quantities ) ->
                     H.li []
-                        [ H.text ingredient
+                        [ H.h3 [] [ H.text ingredient ]
                         , quantities
                             |> List.sortBy .recipeTitle
                             |> List.map
@@ -94,7 +95,7 @@ view model =
                             |> H.ul []
                         ]
                 )
-            |> H.ul []
+            |> H.ul [ H.class "toplevel" ]
         ]
 
 
