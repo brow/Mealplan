@@ -76,26 +76,28 @@ view model =
         , collectIngredients model.recipes
             |> Dict.toList
             |> List.sortBy Tuple.first
+            |> List.map viewIngredient
+            |> H.ul [ H.class "toplevel" ]
+        ]
+
+
+viewIngredient : ( String, List QuanitityForRecipe ) -> H.Html Msg
+viewIngredient ( ingredient, quantities ) =
+    H.li []
+        [ H.h3 [] [ H.text ingredient ]
+        , quantities
+            |> List.sortBy .recipeTitle
             |> List.map
-                (\( ingredient, quantities ) ->
+                (\q ->
                     H.li []
-                        [ H.h3 [] [ H.text ingredient ]
-                        , quantities
-                            |> List.sortBy .recipeTitle
-                            |> List.map
-                                (\q ->
-                                    H.li []
-                                        [ H.text
-                                            (q.quantity
-                                                ++ " → "
-                                                ++ q.recipeTitle
-                                            )
-                                        ]
-                                )
-                            |> H.ul []
+                        [ H.text
+                            (q.quantity
+                                ++ " → "
+                                ++ q.recipeTitle
+                            )
                         ]
                 )
-            |> H.ul [ H.class "toplevel" ]
+            |> H.ul []
         ]
 
 
