@@ -17,3 +17,20 @@ ul.toplevel {
     list-style: none;
     padding-left: 0;
 }
+
+h3 {
+    font-size: 1.25em;
+    margin-bottom: 0.2em;
+    margin-top: 1em;
+}
+
+td {
+    padding: 0.2rem 0.4rem;
+    vertical-align: top;
+}
+
+td.quantity {
+    width: 9rem;
+    font-weight: bold;
+    padding-left: 1rem;
+}
