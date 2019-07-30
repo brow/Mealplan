@@ -60,7 +60,7 @@ update msg model =
 
 view : Model -> H.Html Msg
 view model =
-    H.div []
+    H.div [ H.class "container" ]
         [ H.h2 [] [ H.text "Recipes" ]
         , model.recipes
             |> List.sortBy .title
@@ -75,26 +75,27 @@ view model =
         , collectIngredients model.recipes
             |> Dict.toList
             |> List.sortBy Tuple.first
+            |> List.map viewIngredient
+            |> H.ul [ H.class "toplevel" ]
+        ]
+
+
+viewIngredient : ( String, List QuanitityForRecipe ) -> H.Html Msg
+viewIngredient ( ingredient, quantities ) =
+    H.li []
+        [ H.h3 [] [ H.text ingredient ]
+        , quantities
+            |> List.sortBy .recipeTitle
             |> List.map
-                (\( ingredient, quantities ) ->
-                    H.li []
-                        [ H.text ingredient
-                        , quantities
-                            |> List.sortBy .recipeTitle
-                            |> List.map
-                                (\q ->
-                                    H.li []
-                                        [ H.text
-                                            (q.quantity
-                                                ++ " → "
-                                                ++ q.recipeTitle
-                                            )
-                                        ]
-                                )
-                            |> H.ul []
+                (\q ->
+                    H.tr []
+                        [ H.td
+                            [ H.class "quantity" ]
+                            [ H.text q.quantity ]
+                        , H.td [] [ H.text q.recipeTitle ]
                         ]
                 )
-            |> H.ul []
+            |> H.table []
         ]
 
 

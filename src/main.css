@@ -9,14 +9,35 @@
   height: inherit;
 }
 
-body {
-    background-color: #002b36;
-    color: #93a1a1;
+:root {
+    --grid-maxWidth: 48rem;
 }
 
-textarea {
-    background-color: inherit;
-    color: inherit;
-    width: 300px;
-    height: 200px; 
+ul.toplevel {
+    list-style: none;
+    padding-left: 0;
+}
+
+ul.toplevel li {
+    margin-bottom: 1.2rem;
+}
+
+h2 {
+    border-bottom: 1px solid var(--color-lightGrey);
+}
+
+h3 {
+    font-size: 1.35em;
+    margin-bottom: 0.2em;
+}
+
+td {
+    padding: 0.2rem 0.4rem;
+    vertical-align: top;
+}
+
+td.quantity {
+    width: 9rem;
+    font-weight: bold;
+    padding-left: 1rem;
 }
