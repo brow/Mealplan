@@ -89,15 +89,14 @@ viewIngredient ( ingredient, quantities ) =
             |> List.sortBy .recipeTitle
             |> List.map
                 (\q ->
-                    H.li []
-                        [ H.text
-                            (q.quantity
-                                ++ " → "
-                                ++ q.recipeTitle
-                            )
+                    H.tr []
+                        [ H.td
+                            [ H.class "quantity" ]
+                            [ H.text q.quantity ]
+                        , H.td [] [ H.text q.recipeTitle ]
                         ]
                 )
-            |> H.ul []
+            |> H.table []
         ]
 
 
