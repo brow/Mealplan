@@ -71,7 +71,6 @@ view model =
             , H.onClick Import
             ]
             [ H.text "Import" ]
-        , H.hr [] []
         , H.h2 [] [ H.text "Ingredients" ]
         , collectIngredients model.recipes
             |> Dict.toList
