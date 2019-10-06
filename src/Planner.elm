@@ -82,7 +82,7 @@ view model =
 
 viewIngredient : ( String, List QuanitityForRecipe ) -> H.Html Msg
 viewIngredient ( ingredient, quantities ) =
-    H.li []
+    H.li [ H.class "card" ]
         [ H.h3 [] [ H.text ingredient ]
         , quantities
             |> List.sortBy .recipeTitle
