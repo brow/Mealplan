@@ -29,6 +29,7 @@ type Msg
     = Import
     | SelectedFiles (List File)
     | LoadedFileContent String
+    | Export
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -57,6 +58,11 @@ update msg model =
             , Cmd.none
             )
 
+        Export ->
+            ( model
+            , Cmd.none
+            )
+
 
 view : Model -> H.Html Msg
 view model =
@@ -77,6 +83,11 @@ view model =
             |> List.sortBy Tuple.first
             |> List.map viewIngredient
             |> H.ul [ H.class "toplevel" ]
+        , H.button
+            [ H.type_ "button"
+            , H.onClick Export
+            ]
+            [ H.text "Export List" ]
         ]
 
 
@@ -96,6 +107,7 @@ viewIngredient ( ingredient, quantities ) =
                         ]
                 )
             |> H.table []
+        , H.input [] []
         ]
 
 

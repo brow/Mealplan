@@ -20,6 +20,11 @@ ul.toplevel {
 
 ul.toplevel li {
     margin-bottom: 1.4rem;
+    padding-bottom: 1em;
+}
+
+div.container {
+    padding-bottom: 1em;
 }
 
 h2 {
@@ -45,4 +50,8 @@ td.quantity {
     width: 9rem;
     font-weight: bold;
     padding-left: 1rem;
+}
+
+input {
+    margin-top: 0.5em;
 }
