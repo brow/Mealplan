@@ -1,13 +1,19 @@
-module Serialize exposing (recipeFromString)
+module Serialize exposing (recipeFromString, shoppingListFromString)
 
 import Parser as P exposing ((|.), (|=), Parser)
 import Recipe exposing (Recipe)
 import Result
+import ShoppingList exposing (ShoppingList)
 
 
 recipeFromString : String -> Result String Recipe
 recipeFromString =
     P.run recipe >> Result.mapError Debug.toString
+
+
+shoppingListFromString : String -> Result String ShoppingList
+shoppingListFromString =
+    P.run shoppingList >> Result.mapError Debug.toString
 
 
 recipe : Parser Recipe
@@ -38,6 +44,29 @@ ingredient =
                     |. P.token ", "
                     |= string
            )
+        |. P.token "\n"
+
+
+shoppingList : Parser ShoppingList
+shoppingList =
+    P.succeed ShoppingList
+        |= P.loop []
+            (\items ->
+                P.oneOf
+                    [ shoppingListItem
+                        |> P.map (\i -> P.Loop (i :: items))
+                    , P.succeed ()
+                        |> P.map (\_ -> P.Done (List.reverse items))
+                    ]
+            )
+
+
+shoppingListItem : Parser ShoppingList.Item
+shoppingListItem =
+    P.succeed ShoppingList.Item
+        |= string
+        |. P.token ", "
+        |= string
         |. P.token "\n"
 
 

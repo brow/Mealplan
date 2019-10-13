@@ -1,26 +1,23 @@
 module Shopper exposing (main)
 
 import Browser
-import Dict exposing (Dict)
 import File exposing (File)
-import File.Download
 import File.Select
 import Html as H
 import Html.Attributes as H
 import Html.Events as H
-import Recipe exposing (Recipe)
 import Serialize
-import Set
+import ShoppingList exposing (ShoppingList)
 import Task
 
 
 type alias Model =
-    {}
+    { shoppingList : ShoppingList }
 
 
 init : ( Model, Cmd Msg )
 init =
-    ( {}
+    ( { shoppingList = { items = [] } }
     , Cmd.none
     )
 
@@ -48,12 +45,12 @@ update msg model =
             )
 
         LoadedFileContent content ->
-            ( case Serialize.recipeFromString content of
-                Ok recipe ->
-                    Debug.todo ""
+            ( case Serialize.shoppingListFromString content of
+                Ok shoppingList ->
+                    { model | shoppingList = shoppingList }
 
                 Err error ->
-                    model
+                    Debug.log error model
             , Cmd.none
             )
 
@@ -62,6 +59,10 @@ view : Model -> H.Html Msg
 view model =
     H.div [ H.class "container" ]
         [ H.h2 [] [ H.text "Shopping list" ]
+        , model.shoppingList.items
+            |> List.sortBy .name
+            |> List.map (\item -> H.li [] [ H.text item.name ])
+            |> H.ul []
         , H.button
             [ H.type_ "button"
             , H.onClick Import
