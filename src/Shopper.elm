@@ -24,7 +24,7 @@ init =
 
 type Msg
     = Import
-    | SelectedFiles (List File)
+    | SelectedFile File
     | LoadedFileContent String
 
 
@@ -33,15 +33,12 @@ update msg model =
     case msg of
         Import ->
             ( model
-            , File.Select.files [] (\x xs -> SelectedFiles (x :: xs))
+            , File.Select.file [] SelectedFile
             )
 
-        SelectedFiles files ->
+        SelectedFile file ->
             ( model
-            , files
-                |> List.map
-                    (Task.perform LoadedFileContent << File.toString)
-                |> Cmd.batch
+            , Task.perform LoadedFileContent (File.toString file)
             )
 
         LoadedFileContent content ->
