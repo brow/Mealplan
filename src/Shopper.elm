@@ -1,6 +1,7 @@
 module Shopper exposing (main)
 
 import Browser
+import Dict exposing (Dict)
 import File exposing (File)
 import File.Select
 import Html as H
@@ -12,42 +13,68 @@ import Task
 
 
 type alias Model =
-    { shoppingList : ShoppingList }
+    { shoppingList : ShoppingList
+    , sources : Dict String String
+    }
 
 
 init : ( Model, Cmd Msg )
 init =
-    ( { shoppingList = { items = [] } }
+    ( { shoppingList = { items = [] }
+      , sources = Dict.empty
+      }
     , Cmd.none
     )
 
 
+type InputType
+    = Items
+    | Sources
+
+
 type Msg
-    = Import
-    | SelectedFile File
-    | LoadedFileContent String
+    = Import InputType
+    | SelectedFile InputType File
+    | LoadedFileContent InputType String
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
-        Import ->
+        Import inputType ->
             ( model
-            , File.Select.file [] SelectedFile
+            , File.Select.file [] (SelectedFile inputType)
             )
 
-        SelectedFile file ->
+        SelectedFile inputType file ->
             ( model
-            , Task.perform LoadedFileContent (File.toString file)
+            , Task.perform
+                (LoadedFileContent inputType)
+                (File.toString file)
             )
 
-        LoadedFileContent content ->
-            ( case Serialize.shoppingListFromString content of
-                Ok shoppingList ->
-                    { model | shoppingList = shoppingList }
+        LoadedFileContent inputType content ->
+            ( case inputType of
+                Items ->
+                    case Serialize.shoppingListFromString content of
+                        Ok shoppingList ->
+                            { model | shoppingList = shoppingList }
 
-                Err error ->
-                    Debug.log error model
+                        Err error ->
+                            Debug.log error model
+
+                Sources ->
+                    case Serialize.shoppingListSourcesFromString content of
+                        Ok sources ->
+                            { model
+                                | sources =
+                                    sources
+                                        |> List.map (\s -> ( s.name, s.url ))
+                                        |> Dict.fromList
+                            }
+
+                        Err error ->
+                            Debug.log error model
             , Cmd.none
             )
 
@@ -62,7 +89,18 @@ view model =
                 (\item ->
                     H.li
                         []
-                        [ H.b [] [ H.text item.name ]
+                        [ H.b []
+                            [ let
+                                text =
+                                    H.text item.name
+                              in
+                              case Dict.get item.name model.sources of
+                                Just url ->
+                                    H.a [ H.href url ] [ text ]
+
+                                Nothing ->
+                                    text
+                            ]
                         , H.text ", "
                         , H.text item.quantity
                         ]
@@ -70,13 +108,13 @@ view model =
             |> H.ul []
         , H.button
             [ H.type_ "button"
-            , H.onClick Import
+            , H.onClick (Import Items)
             ]
             [ H.text "Import Items" ]
         , H.text " "
         , H.button
             [ H.type_ "button"
-            , H.onClick Import
+            , H.onClick (Import Sources)
             ]
             [ H.text "Import Sources" ]
         ]

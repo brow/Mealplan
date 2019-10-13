@@ -1,4 +1,4 @@
-module ShoppingList exposing (Item, ShoppingList)
+module ShoppingList exposing (Item, ShoppingList, Source)
 
 
 type alias ShoppingList =
@@ -9,4 +9,10 @@ type alias ShoppingList =
 type alias Item =
     { name : String
     , quantity : String
+    }
+
+
+type alias Source =
+    { name : String
+    , url : String
     }
