@@ -53,5 +53,6 @@ td.quantity {
 }
 
 input {
+    font-weight: bold;
     margin-top: 0.5em;
 }
