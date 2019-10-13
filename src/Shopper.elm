@@ -83,6 +83,17 @@ view : Model -> H.Html Msg
 view model =
     H.div [ H.class "container" ]
         [ H.h2 [] [ H.text "Shopping list" ]
+        , H.button
+            [ H.type_ "button"
+            , H.onClick (Import Items)
+            ]
+            [ H.text "Import Items" ]
+        , H.text " "
+        , H.button
+            [ H.type_ "button"
+            , H.onClick (Import Sources)
+            ]
+            [ H.text "Import Sources" ]
         , model.shoppingList.items
             |> List.sortBy .name
             |> List.map
@@ -106,17 +117,6 @@ view model =
                         ]
                 )
             |> H.ul []
-        , H.button
-            [ H.type_ "button"
-            , H.onClick (Import Items)
-            ]
-            [ H.text "Import Items" ]
-        , H.text " "
-        , H.button
-            [ H.type_ "button"
-            , H.onClick (Import Sources)
-            ]
-            [ H.text "Import Sources" ]
         ]
 
 
