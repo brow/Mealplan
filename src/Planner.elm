@@ -3,6 +3,7 @@ module Planner exposing (main)
 import Browser
 import Dict exposing (Dict)
 import File exposing (File)
+import File.Download
 import File.Select
 import Html as H
 import Html.Attributes as H
@@ -15,12 +16,13 @@ import Task
 
 type alias Model =
     { recipes : List Recipe
+    , enteredQuantities : Dict String String
     }
 
 
 init : ( Model, Cmd Msg )
 init =
-    ( { recipes = [] }
+    ( { recipes = [], enteredQuantities = Dict.empty }
     , Cmd.none
     )
 
@@ -29,6 +31,7 @@ type Msg
     = Import
     | SelectedFiles (List File)
     | LoadedFileContent String
+    | ChangeQuantity String String
     | Export
 
 
@@ -58,9 +61,33 @@ update msg model =
             , Cmd.none
             )
 
-        Export ->
-            ( model
+        ChangeQuantity ingredientName newQuantity ->
+            ( { model
+                | enteredQuantities =
+                    Dict.insert
+                        ingredientName
+                        newQuantity
+                        model.enteredQuantities
+              }
             , Cmd.none
+            )
+
+        Export ->
+            let
+                text =
+                    Dict.toList model.enteredQuantities
+                        |> List.sortBy Tuple.first
+                        |> List.map
+                            (\( ingredient, quantity ) ->
+                                String.join ", " [ ingredient, quantity ]
+                            )
+                        |> String.join "\n"
+            in
+            ( model
+            , File.Download.string
+                "groceries.txt"
+                "text/plain"
+                text
             )
 
 
@@ -81,6 +108,14 @@ view model =
         , collectIngredients model.recipes
             |> Dict.toList
             |> List.sortBy Tuple.first
+            |> List.map
+                (\( name, quantities ) ->
+                    ( name
+                    , quantities
+                    , Dict.get name model.enteredQuantities
+                        |> Maybe.withDefault ""
+                    )
+                )
             |> List.map viewIngredient
             |> H.ul [ H.class "toplevel" ]
         , H.button
@@ -91,8 +126,8 @@ view model =
         ]
 
 
-viewIngredient : ( String, List QuanitityForRecipe ) -> H.Html Msg
-viewIngredient ( ingredient, quantities ) =
+viewIngredient : ( String, List QuanitityForRecipe, String ) -> H.Html Msg
+viewIngredient ( ingredient, quantities, enteredQuantity ) =
     H.li [ H.class "card" ]
         [ H.h3 [] [ H.text ingredient ]
         , quantities
@@ -107,7 +142,11 @@ viewIngredient ( ingredient, quantities ) =
                         ]
                 )
             |> H.table []
-        , H.input [] []
+        , H.input
+            [ H.value enteredQuantity
+            , H.onInput (ChangeQuantity ingredient)
+            ]
+            []
         ]
 
 
