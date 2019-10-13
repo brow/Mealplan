@@ -61,7 +61,15 @@ view model =
         [ H.h2 [] [ H.text "Shopping list" ]
         , model.shoppingList.items
             |> List.sortBy .name
-            |> List.map (\item -> H.li [] [ H.text item.name ])
+            |> List.map
+                (\item ->
+                    H.li
+                        []
+                        [ H.b [] [ H.text item.name ]
+                        , H.text ", "
+                        , H.text item.quantity
+                        ]
+                )
             |> H.ul []
         , H.button
             [ H.type_ "button"
