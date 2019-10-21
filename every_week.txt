@@ -15,3 +15,4 @@ salami, 2 packages
 celery, 1 bunch
 slivered almond, 1 bag
 cottage cheese, 2 tubs
+butter, 1 tub
