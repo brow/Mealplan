@@ -1,6 +1,6 @@
 module Main exposing (main)
 
-import Planner
+import Shopper
 
 
 
@@ -8,4 +8,4 @@ import Planner
 
 
 main =
-    Planner.main
+    Shopper.main
