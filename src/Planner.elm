@@ -76,6 +76,7 @@ update msg model =
             let
                 text =
                     Dict.toList model.enteredQuantities
+                        |> List.filter (Tuple.second >> String.isEmpty >> not)
                         |> List.sortBy Tuple.first
                         |> List.map
                             (\( ingredient, quantity ) ->
