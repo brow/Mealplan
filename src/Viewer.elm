@@ -83,4 +83,15 @@ view model =
 
 viewRecipe : Recipe -> H.Html Msg
 viewRecipe recipe =
-    H.h2 [] [ H.text recipe.title ]
+    H.div []
+        [ H.h2 [] [ H.text recipe.title ]
+        , H.ul [] <|
+            List.map
+                (\ingredient ->
+                    H.li []
+                        [ H.strong [] [ H.text ingredient.name ]
+                        , H.text (", " ++ ingredient.quantity)
+                        ]
+                )
+                recipe.ingredients
+        ]
