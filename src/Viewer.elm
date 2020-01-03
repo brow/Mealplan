@@ -78,5 +78,9 @@ view model =
             ]
 
         else
-            model.recipes
-                |> List.map (\recipe -> H.h2 [] [ H.text recipe.title ])
+            List.map viewRecipe model.recipes
+
+
+viewRecipe : Recipe -> H.Html Msg
+viewRecipe recipe =
+    H.h2 [] [ H.text recipe.title ]
