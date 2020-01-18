@@ -12,16 +12,12 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/Mealplan/favicon.ico"
   },
   {
-    "revision": "93a950004213c2822b4ccefe9c438648",
+    "revision": "ecbbaf6a1c0d474cda5aa65c08fa7685",
     "url": "/Mealplan/index.html"
   },
   {
     "revision": "6ead519905b7b907c00965be37dd5cd7",
     "url": "/Mealplan/logo.svg"
-  },
-  {
-    "revision": "1c82903c2994c2507b385b9042bbfac5",
-    "url": "/Mealplan/manifest.json"
   },
   {
     "revision": "23deca9c63e00dbebb5b",
