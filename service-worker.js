@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "/Mealplan/precache-manifest.7a6a172769f6be4aa712ee4a91ad4e78.js"
+  "/Mealplan/precache-manifest.a364e0e5d19a378d14d6c7153c5e1efb.js"
 );
 
 workbox.core.skipWaiting();

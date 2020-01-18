@@ -1,9 +1,5 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "194577a7e20bdcc7afbb718f502c134c",
-    "url": "/Mealplan/.DS_Store"
-  },
-  {
     "revision": "3fda693f467dc86b567ea734feef536e",
     "url": "/Mealplan/chota.min.css"
   },
@@ -12,7 +8,7 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/Mealplan/favicon.ico"
   },
   {
-    "revision": "ecbbaf6a1c0d474cda5aa65c08fa7685",
+    "revision": "3b2495bc4c30251eaa53bdb74337f9be",
     "url": "/Mealplan/index.html"
   },
   {
@@ -20,12 +16,16 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/Mealplan/logo.svg"
   },
   {
-    "revision": "23deca9c63e00dbebb5b",
+    "revision": "fb26df11bff542a1431145ed19252c7b",
+    "url": "/Mealplan/plan/index.html"
+  },
+  {
+    "revision": "d61520dc0aa2f7a6a78f",
     "url": "/Mealplan/static/css/main.5216141e.chunk.css"
   },
   {
-    "revision": "23deca9c63e00dbebb5b",
-    "url": "/Mealplan/static/js/main.23deca9c.chunk.js"
+    "revision": "d61520dc0aa2f7a6a78f",
+    "url": "/Mealplan/static/js/main.d61520dc.chunk.js"
   },
   {
     "revision": "ff9be7f33e5e4f3370cd",

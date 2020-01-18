@@ -1,16 +1,16 @@
 {
   "main.css": "/Mealplan/static/css/main.5216141e.chunk.css",
-  "main.js": "/Mealplan/static/js/main.23deca9c.chunk.js",
-  "main.js.map": "/Mealplan/static/js/main.23deca9c.chunk.js.map",
+  "main.js": "/Mealplan/static/js/main.d61520dc.chunk.js",
+  "main.js.map": "/Mealplan/static/js/main.d61520dc.chunk.js.map",
   "runtime~main.js": "/Mealplan/static/js/runtime~main.ff9be7f3.js",
   "runtime~main.js.map": "/Mealplan/static/js/runtime~main.ff9be7f3.js.map",
   "vendors~main.js": "/Mealplan/static/js/vendors~main.3ca81432.chunk.js",
   "vendors~main.js.map": "/Mealplan/static/js/vendors~main.3ca81432.chunk.js.map",
   "./service-worker.js": "/Mealplan/./service-worker.js",
-  ".DS_Store": "/Mealplan/.DS_Store",
   "chota.min.css": "/Mealplan/chota.min.css",
   "favicon.ico": "/Mealplan/favicon.ico",
   "index.html": "/Mealplan/index.html",
   "logo.svg": "/Mealplan/logo.svg",
-  "precache-manifest.7a6a172769f6be4aa712ee4a91ad4e78.js": "/Mealplan/precache-manifest.7a6a172769f6be4aa712ee4a91ad4e78.js"
+  "plan/index.html": "/Mealplan/plan/index.html",
+  "precache-manifest.a364e0e5d19a378d14d6c7153c5e1efb.js": "/Mealplan/precache-manifest.a364e0e5d19a378d14d6c7153c5e1efb.js"
 }
