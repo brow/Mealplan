@@ -12,17 +12,17 @@ import ShoppingList exposing (ShoppingList)
 
 recipeFromString : String -> Result String Recipe
 recipeFromString =
-    P.run recipe >> Result.mapError Debug.toString
+    P.run recipe >> Result.mapError P.deadEndsToString
 
 
 shoppingListFromString : String -> Result String ShoppingList
 shoppingListFromString =
-    P.run shoppingList >> Result.mapError Debug.toString
+    P.run shoppingList >> Result.mapError P.deadEndsToString
 
 
 shoppingListSourcesFromString : String -> Result String (List ShoppingList.Source)
 shoppingListSourcesFromString =
-    P.run shoppingListSources >> Result.mapError Debug.toString
+    P.run shoppingListSources >> Result.mapError P.deadEndsToString
 
 
 recipe : Parser Recipe
