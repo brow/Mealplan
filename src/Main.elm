@@ -1,7 +1,7 @@
 module Main exposing (main)
 
 import Browser
-import Browser.Navigation
+import Browser.Navigation as Navigation
 import Shopper
 import Url
 
@@ -21,7 +21,7 @@ main =
         , view = view
         , update = update
         , subscriptions = always Sub.none
-        , onUrlRequest = always Noop
+        , onUrlRequest = LinkClicked
         , onUrlChange = always Noop
         }
 
@@ -31,7 +31,7 @@ main =
 
 
 type alias Model =
-    { key : Browser.Navigation.Key
+    { key : Navigation.Key
     , page : Page
     }
 
@@ -62,7 +62,7 @@ view model =
 -- INIT
 
 
-init : () -> Url.Url -> Browser.Navigation.Key -> ( Model, Cmd msg )
+init : () -> Url.Url -> Navigation.Key -> ( Model, Cmd msg )
 init _ url key =
     ( { key = key, page = Plan }
     , Cmd.none
@@ -75,6 +75,7 @@ init _ url key =
 
 type Msg
     = Noop
+    | LinkClicked Browser.UrlRequest
 
 
 update : Msg -> Model -> ( Model, Cmd msg )
@@ -82,3 +83,15 @@ update message model =
     case message of
         Noop ->
             ( model, Cmd.none )
+
+        LinkClicked urlRequest ->
+            case urlRequest of
+                Browser.Internal url ->
+                    ( model
+                    , Navigation.pushUrl model.key (Url.toString url)
+                    )
+
+                Browser.External href ->
+                    ( model
+                    , Navigation.load href
+                    )
