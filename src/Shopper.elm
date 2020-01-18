@@ -1,6 +1,7 @@
 module Shopper exposing (main)
 
 import Browser
+import Console
 import Dict exposing (Dict)
 import File exposing (File)
 import File.Select
@@ -54,29 +55,31 @@ update msg model =
             )
 
         LoadedFileContent inputType content ->
-            ( case inputType of
+            case inputType of
                 Items ->
                     case Serialize.shoppingListFromString content of
                         Ok shoppingList ->
-                            { model | shoppingList = shoppingList }
+                            ( { model | shoppingList = shoppingList }
+                            , Cmd.none
+                            )
 
                         Err error ->
-                            Debug.log error model
+                            ( model, Console.error error )
 
                 Sources ->
                     case Serialize.shoppingListSourcesFromString content of
                         Ok sources ->
-                            { model
+                            ( { model
                                 | sources =
                                     sources
                                         |> List.map (\s -> ( s.name, s.url ))
                                         |> Dict.fromList
-                            }
+                              }
+                            , Cmd.none
+                            )
 
                         Err error ->
-                            Debug.log error model
-            , Cmd.none
-            )
+                            ( model, Console.error error )
 
 
 view : Model -> H.Html Msg
