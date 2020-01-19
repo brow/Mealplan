@@ -4,6 +4,7 @@ import Browser
 import Browser.Navigation as Navigation
 import Shopper
 import Url
+import Url.Parser as Parser exposing ((</>), Parser)
 
 
 type Hole
@@ -22,7 +23,7 @@ main =
         , update = update
         , subscriptions = always Sub.none
         , onUrlRequest = LinkClicked
-        , onUrlChange = always Noop
+        , onUrlChange = UrlChanged
         }
 
 
@@ -37,8 +38,10 @@ type alias Model =
 
 
 type Page
-    = Plan
+    = Home
+    | Plan
     | Shop
+    | NotFound
 
 
 
@@ -54,6 +57,12 @@ view model =
 
             Shop ->
                 "Shop"
+
+            Home ->
+                "Home"
+
+            NotFound ->
+                "Not Found"
     , body = []
     }
 
@@ -64,9 +73,7 @@ view model =
 
 init : () -> Url.Url -> Navigation.Key -> ( Model, Cmd msg )
 init _ url key =
-    ( { key = key, page = Plan }
-    , Cmd.none
-    )
+    stepUrl url { key = key, page = NotFound }
 
 
 
@@ -76,6 +83,7 @@ init _ url key =
 type Msg
     = Noop
     | LinkClicked Browser.UrlRequest
+    | UrlChanged Url.Url
 
 
 update : Msg -> Model -> ( Model, Cmd msg )
@@ -95,3 +103,34 @@ update message model =
                     ( model
                     , Navigation.load href
                     )
+
+        UrlChanged url ->
+            stepUrl url model
+
+
+stepUrl : Url.Url -> Model -> ( Model, Cmd msg )
+stepUrl url model =
+    let
+        parser =
+            Parser.oneOf
+                [ route Parser.top
+                    ( { model | page = Home }, Cmd.none )
+                , route (Parser.s "plan")
+                    ( { model | page = Plan }, Cmd.none )
+                , route (Parser.s "shop")
+                    ( { model | page = Shop }, Cmd.none )
+                ]
+    in
+    case Parser.parse parser url of
+        Just answer ->
+            answer
+
+        Nothing ->
+            ( { model | page = NotFound }
+            , Cmd.none
+            )
+
+
+route : Parser a b -> a -> Parser (b -> c) c
+route parser handler =
+    Parser.map handler parser
