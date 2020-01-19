@@ -2,6 +2,8 @@ module Main exposing (main)
 
 import Browser
 import Browser.Navigation as Navigation
+import Html
+import Html.Attributes as Html
 import Shopper
 import Url
 import Url.Parser as Parser exposing ((</>), Parser)
@@ -63,7 +65,13 @@ view model =
 
             NotFound ->
                 "Not Found"
-    , body = []
+    , body =
+        [ Html.a [ Html.href "/" ] [ Html.text "Home" ]
+        , Html.text "|"
+        , Html.a [ Html.href "shop" ] [ Html.text "Shop" ]
+        , Html.text "|"
+        , Html.a [ Html.href "plan" ] [ Html.text "Plan" ]
+        ]
     }
 
 
