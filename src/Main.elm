@@ -40,8 +40,7 @@ type alias Model =
 
 
 type Page
-    = Home
-    | Plan
+    = Plan
     | Shop
     | NotFound
 
@@ -60,15 +59,10 @@ view model =
             Shop ->
                 "Shop"
 
-            Home ->
-                "Home"
-
             NotFound ->
                 "Not Found"
     , body =
-        [ Html.a [ Html.href "/" ] [ Html.text "Home" ]
-        , Html.text "|"
-        , Html.a [ Html.href "shop" ] [ Html.text "Shop" ]
+        [ Html.a [ Html.href "shop" ] [ Html.text "Shop" ]
         , Html.text "|"
         , Html.a [ Html.href "plan" ] [ Html.text "Plan" ]
         ]
@@ -117,9 +111,7 @@ stepUrl url model =
     let
         parser =
             Parser.oneOf
-                [ route Parser.top
-                    ( { model | page = Home }, Cmd.none )
-                , route (Parser.s "plan")
+                [ route (Parser.oneOf [ Parser.top, Parser.s "plan" ])
                     ( { model | page = Plan }, Cmd.none )
                 , route (Parser.s "shop")
                     ( { model | page = Shop }, Cmd.none )
