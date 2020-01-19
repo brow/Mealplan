@@ -89,17 +89,13 @@ init _ url key =
 
 
 type Msg
-    = Noop
-    | LinkClicked Browser.UrlRequest
+    = LinkClicked Browser.UrlRequest
     | UrlChanged Url.Url
 
 
 update : Msg -> Model -> ( Model, Cmd msg )
 update message model =
     case message of
-        Noop ->
-            ( model, Cmd.none )
-
         LinkClicked urlRequest ->
             case urlRequest of
                 Browser.Internal url ->
