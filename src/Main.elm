@@ -2,7 +2,7 @@ module Main exposing (main)
 
 import Browser
 import Browser.Navigation as Navigation
-import Html
+import Html exposing (Html)
 import Html.Attributes as Html
 import Shopper
 import Url
@@ -62,11 +62,18 @@ view model =
             NotFound ->
                 "Not Found"
     , body =
+        [ viewNav
+        ]
+    }
+
+
+viewNav : Html msg
+viewNav =
+    Html.div []
         [ Html.a [ Html.href "shop" ] [ Html.text "Shop" ]
         , Html.text "|"
         , Html.a [ Html.href "plan" ] [ Html.text "Plan" ]
         ]
-    }
 
 
 
