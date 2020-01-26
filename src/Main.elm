@@ -41,7 +41,7 @@ type alias Model =
 
 type Page
     = Plan
-    | Shop
+    | Shop Shopper.Model
     | NotFound
 
 
@@ -49,20 +49,29 @@ type Page
 -- VIEW
 
 
-view : Model -> Browser.Document msg
+view : Model -> Browser.Document Msg
 view model =
     { title =
         case model.page of
             Plan ->
                 "Plan"
 
-            Shop ->
+            Shop _ ->
                 "Shop"
 
             NotFound ->
                 "Not Found"
     , body =
         [ viewNav
+        , case model.page of
+            Plan ->
+                Html.div [] []
+
+            Shop shopModel ->
+                Shopper.view shopModel ShopMsg
+
+            NotFound ->
+                Html.div [] []
         ]
     }
 
@@ -92,6 +101,7 @@ init _ url key =
 type Msg
     = LinkClicked Browser.UrlRequest
     | UrlChanged Url.Url
+    | ShopMsg Shopper.Msg
 
 
 update : Msg -> Model -> ( Model, Cmd msg )
@@ -112,6 +122,10 @@ update message model =
         UrlChanged url ->
             stepUrl url model
 
+        ShopMsg shopMessage ->
+            (Shop (Shopper.update shopMessage)
+            Debug.todo "handle ShopMsg _"
+
 
 stepUrl : Url.Url -> Model -> ( Model, Cmd msg )
 stepUrl url model =
@@ -121,7 +135,7 @@ stepUrl url model =
                 [ route (Parser.oneOf [ Parser.top, Parser.s "plan" ])
                     ( { model | page = Plan }, Cmd.none )
                 , route (Parser.s "shop")
-                    ( { model | page = Shop }, Cmd.none )
+                    ( { model | page = Shop Shopper.init }, Cmd.none )
                 ]
     in
     case Parser.parse parser url of

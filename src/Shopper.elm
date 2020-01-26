@@ -1,4 +1,4 @@
-module Shopper exposing (main)
+module Shopper exposing (Model, Msg, init, view)
 
 import Browser
 import Console
@@ -19,13 +19,11 @@ type alias Model =
     }
 
 
-init : ( Model, Cmd Msg )
+init : Model
 init =
-    ( { shoppingList = { items = [] }
-      , sources = Dict.empty
-      }
-    , Cmd.none
-    )
+    { shoppingList = { items = [] }
+    , sources = Dict.empty
+    }
 
 
 type InputType
@@ -82,19 +80,19 @@ update msg model =
                             ( model, Console.error error )
 
 
-view : Model -> H.Html Msg
-view model =
+view : Model -> (Msg -> msg) -> H.Html msg
+view model wrapMessage =
     H.div [ H.class "container" ]
         [ H.h2 [] [ H.text "Shopping list" ]
         , H.button
             [ H.type_ "button"
-            , H.onClick (Import Items)
+            , H.onClick (wrapMessage (Import Items))
             ]
             [ H.text "Import Items" ]
         , H.text " "
         , H.button
             [ H.type_ "button"
-            , H.onClick (Import Sources)
+            , H.onClick (wrapMessage (Import Sources))
             ]
             [ H.text "Import Sources" ]
         , model.shoppingList.items
@@ -121,13 +119,3 @@ view model =
                 )
             |> H.ul []
         ]
-
-
-main : Program () Model Msg
-main =
-    Browser.element
-        { view = view
-        , init = \_ -> init
-        , update = update
-        , subscriptions = always Sub.none
-        }
