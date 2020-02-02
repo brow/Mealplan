@@ -1,6 +1,7 @@
 module Planner exposing (main)
 
 import Browser
+import Console
 import Dict exposing (Dict)
 import File exposing (File)
 import File.Download
@@ -52,14 +53,12 @@ update msg model =
             )
 
         LoadedFileContent content ->
-            ( case Serialize.recipeFromString content of
+            case Serialize.recipeFromString content of
                 Ok recipe ->
-                    { model | recipes = recipe :: model.recipes }
+                    ( { model | recipes = recipe :: model.recipes }, Cmd.none )
 
                 Err error ->
-                    model
-            , Cmd.none
-            )
+                    ( model, Console.error error )
 
         ChangeQuantity ingredientName newQuantity ->
             ( { model
