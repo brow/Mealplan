@@ -1,6 +1,5 @@
-module Shopper exposing (main)
+module Shopper exposing (Model, Msg, init, update, view)
 
-import Browser
 import Console
 import Dict exposing (Dict)
 import File exposing (File)
@@ -19,13 +18,11 @@ type alias Model =
     }
 
 
-init : ( Model, Cmd Msg )
+init : Model
 init =
-    ( { shoppingList = { items = [] }
-      , sources = Dict.empty
-      }
-    , Cmd.none
-    )
+    { shoppingList = { items = [] }
+    , sources = Dict.empty
+    }
 
 
 type InputType
@@ -121,13 +118,3 @@ view model =
                 )
             |> H.ul []
         ]
-
-
-main : Program () Model Msg
-main =
-    Browser.element
-        { view = view
-        , init = \_ -> init
-        , update = update
-        , subscriptions = always Sub.none
-        }
