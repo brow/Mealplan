@@ -1,4 +1,4 @@
-module Shopper exposing (Model, Msg, init, view)
+module Shopper exposing (Model, Msg, init, update, view)
 
 import Browser
 import Console

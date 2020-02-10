@@ -36,12 +36,13 @@ main =
 type alias Model =
     { key : Navigation.Key
     , page : Page
+    , shop : Shopper.Model
     }
 
 
 type Page
     = Plan
-    | Shop Shopper.Model
+    | Shop
     | NotFound
 
 
@@ -56,7 +57,7 @@ view model =
             Plan ->
                 "Plan"
 
-            Shop _ ->
+            Shop ->
                 "Shop"
 
             NotFound ->
@@ -67,8 +68,8 @@ view model =
             Plan ->
                 Html.div [] []
 
-            Shop shopModel ->
-                Shopper.view shopModel ShopMsg
+            Shop ->
+                Shopper.view model.shop ShopMsg
 
             NotFound ->
                 Html.div [] []
@@ -79,9 +80,9 @@ view model =
 viewNav : Html msg
 viewNav =
     Html.div []
-        [ Html.a [ Html.href "shop" ] [ Html.text "Shop" ]
-        , Html.text "|"
-        , Html.a [ Html.href "plan" ] [ Html.text "Plan" ]
+        [ Html.a [ Html.href "plan" ] [ Html.text "Plan" ]
+        , Html.text " | "
+        , Html.a [ Html.href "shop" ] [ Html.text "Shop" ]
         ]
 
 
@@ -91,7 +92,11 @@ viewNav =
 
 init : () -> Url.Url -> Navigation.Key -> ( Model, Cmd msg )
 init _ url key =
-    stepUrl url { key = key, page = NotFound }
+    stepUrl url
+        { key = key
+        , page = NotFound
+        , shop = Shopper.init
+        }
 
 
 
@@ -104,7 +109,7 @@ type Msg
     | ShopMsg Shopper.Msg
 
 
-update : Msg -> Model -> ( Model, Cmd msg )
+update : Msg -> Model -> ( Model, Cmd Msg )
 update message model =
     case message of
         LinkClicked urlRequest ->
@@ -123,8 +128,13 @@ update message model =
             stepUrl url model
 
         ShopMsg shopMessage ->
-            (Shop (Shopper.update shopMessage)
-            Debug.todo "handle ShopMsg _"
+            let
+                ( shopModel, cmd ) =
+                    Shopper.update shopMessage model.shop
+            in
+            ( { model | shop = shopModel }
+            , Cmd.map ShopMsg cmd
+            )
 
 
 stepUrl : Url.Url -> Model -> ( Model, Cmd msg )
@@ -135,7 +145,7 @@ stepUrl url model =
                 [ route (Parser.oneOf [ Parser.top, Parser.s "plan" ])
                     ( { model | page = Plan }, Cmd.none )
                 , route (Parser.s "shop")
-                    ( { model | page = Shop Shopper.init }, Cmd.none )
+                    ( { model | page = Shop }, Cmd.none )
                 ]
     in
     case Parser.parse parser url of
