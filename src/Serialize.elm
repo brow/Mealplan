@@ -5,6 +5,7 @@ module Serialize exposing
     )
 
 import Parser as P exposing ((|.), (|=), Parser)
+import ParserExtras
 import Recipe exposing (Recipe)
 import Result
 import ShoppingList exposing (ShoppingList)
@@ -12,17 +13,17 @@ import ShoppingList exposing (ShoppingList)
 
 recipeFromString : String -> Result String Recipe
 recipeFromString =
-    P.run recipe >> Result.mapError P.deadEndsToString
+    P.run recipe >> Result.mapError ParserExtras.deadEndsToString
 
 
 shoppingListFromString : String -> Result String ShoppingList
 shoppingListFromString =
-    P.run shoppingList >> Result.mapError P.deadEndsToString
+    P.run shoppingList >> Result.mapError ParserExtras.deadEndsToString
 
 
 shoppingListSourcesFromString : String -> Result String (List ShoppingList.Source)
 shoppingListSourcesFromString =
-    P.run shoppingListSources >> Result.mapError P.deadEndsToString
+    P.run shoppingListSources >> Result.mapError ParserExtras.deadEndsToString
 
 
 recipe : Parser Recipe
