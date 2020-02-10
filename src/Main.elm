@@ -54,42 +54,48 @@ type Page
 
 view : Model -> Browser.Document Msg
 view model =
-    { title =
-        case model.page of
-            Plan ->
-                "Plan"
+    let
+        ( title, content ) =
+            case model.page of
+                Plan ->
+                    ( "Plan"
+                    , Planner.view model.plan |> H.map PlanMsg
+                    )
 
-            Shop ->
-                "Shop"
+                Shop ->
+                    ( "Shop"
+                    , Shopper.view model.shop |> H.map ShopMsg
+                    )
 
-            NotFound ->
-                "Not Found"
+                NotFound ->
+                    ( "Not Found"
+                    , H.div [] []
+                    )
+    in
+    { title = title
     , body =
-        [ viewNav
-        , case model.page of
-            Plan ->
-                Planner.view model.plan |> H.map PlanMsg
+        [ H.div
+            [ A.class "container" ]
+            [ H.nav [ A.class "tabs is-full" ]
+                [ H.a
+                    [ A.href "plan" ]
+                    [ H.text "Plan" ]
+                , H.a
+                    [ A.href "shop" ]
+                    [ H.text "Shop" ]
+                ]
+            , case model.page of
+                Plan ->
+                    Planner.view model.plan |> H.map PlanMsg
 
-            Shop ->
-                Shopper.view model.shop |> H.map ShopMsg
+                Shop ->
+                    Shopper.view model.shop |> H.map ShopMsg
 
-            NotFound ->
-                H.div [] []
+                NotFound ->
+                    H.div [] []
+            ]
         ]
     }
-
-
-viewNav : H.Html msg
-viewNav =
-    H.div []
-        [ H.a
-            [ A.href "plan" ]
-            [ H.text "Plan" ]
-        , H.text " | "
-        , H.a
-            [ A.href "shop" ]
-            [ H.text "Shop" ]
-        ]
 
 
 

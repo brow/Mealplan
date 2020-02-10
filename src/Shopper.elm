@@ -81,7 +81,7 @@ update msg model =
 
 view : Model -> H.Html Msg
 view model =
-    H.div [ H.class "container" ]
+    H.div []
         [ H.h2 [] [ H.text "Shopping list" ]
         , H.button
             [ H.type_ "button"
