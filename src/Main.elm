@@ -2,8 +2,8 @@ module Main exposing (main)
 
 import Browser
 import Browser.Navigation as Navigation
-import Html exposing (Html)
-import Html.Attributes as Html
+import Html as H
+import Html.Attributes as A
 import Shopper
 import Url
 import Url.Parser as Parser exposing ((</>), Parser)
@@ -66,23 +66,27 @@ view model =
         [ viewNav
         , case model.page of
             Plan ->
-                Html.div [] []
+                H.div [] []
 
             Shop ->
-                Shopper.view model.shop ShopMsg
+                Shopper.view model.shop |> H.map ShopMsg
 
             NotFound ->
-                Html.div [] []
+                H.div [] []
         ]
     }
 
 
-viewNav : Html msg
+viewNav : H.Html msg
 viewNav =
-    Html.div []
-        [ Html.a [ Html.href "plan" ] [ Html.text "Plan" ]
-        , Html.text " | "
-        , Html.a [ Html.href "shop" ] [ Html.text "Shop" ]
+    H.div []
+        [ H.a
+            [ A.href "plan" ]
+            [ H.text "Plan" ]
+        , H.text " | "
+        , H.a
+            [ A.href "shop" ]
+            [ H.text "Shop" ]
         ]
 
 

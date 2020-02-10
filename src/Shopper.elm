@@ -79,19 +79,19 @@ update msg model =
                             ( model, Console.error error )
 
 
-view : Model -> (Msg -> msg) -> H.Html msg
-view model wrapMessage =
+view : Model -> H.Html Msg
+view model =
     H.div [ H.class "container" ]
         [ H.h2 [] [ H.text "Shopping list" ]
         , H.button
             [ H.type_ "button"
-            , H.onClick (wrapMessage (Import Items))
+            , H.onClick (Import Items)
             ]
             [ H.text "Import Items" ]
         , H.text " "
         , H.button
             [ H.type_ "button"
-            , H.onClick (wrapMessage (Import Sources))
+            , H.onClick (Import Sources)
             ]
             [ H.text "Import Sources" ]
         , model.shoppingList.items
