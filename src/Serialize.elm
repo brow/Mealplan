@@ -77,7 +77,7 @@ shoppingListItem =
         |= string
         |. P.token ", "
         |= string
-        |. P.token "\n"
+        |. P.chompIf (\c -> c == '\n')
 
 
 shoppingListSources : Parser (List ShoppingList.Source)
