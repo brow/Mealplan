@@ -1,6 +1,5 @@
 module Shopper exposing (Model, Msg, init, update, view)
 
-import Browser
 import Console
 import Dict exposing (Dict)
 import File exposing (File)
