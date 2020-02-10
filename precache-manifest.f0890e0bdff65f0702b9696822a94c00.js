@@ -1,5 +1,9 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
+    "revision": "12a3983c9a553685a6753b7ccfd7b63d",
+    "url": "/404.html"
+  },
+  {
     "revision": "3fda693f467dc86b567ea734feef536e",
     "url": "/chota.min.css"
   },
@@ -8,7 +12,7 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/favicon.ico"
   },
   {
-    "revision": "ba45237c9438a002998164e937a79e08",
+    "revision": "40104e4ddce936bb88cc468dad4adc22",
     "url": "/index.html"
   },
   {

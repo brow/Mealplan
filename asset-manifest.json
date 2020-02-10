@@ -7,10 +7,11 @@
   "vendors~main.js": "/static/js/vendors~main.3ca81432.chunk.js",
   "vendors~main.js.map": "/static/js/vendors~main.3ca81432.chunk.js.map",
   "./service-worker.js": "/./service-worker.js",
+  "404.html": "/404.html",
   "chota.min.css": "/chota.min.css",
   "favicon.ico": "/favicon.ico",
   "index.html": "/index.html",
   "logo.svg": "/logo.svg",
   "manifest.json": "/manifest.json",
-  "precache-manifest.5214a0922d41b5d922e0e2523e9553c8.js": "/precache-manifest.5214a0922d41b5d922e0e2523e9553c8.js"
+  "precache-manifest.f0890e0bdff65f0702b9696822a94c00.js": "/precache-manifest.f0890e0bdff65f0702b9696822a94c00.js"
 }
