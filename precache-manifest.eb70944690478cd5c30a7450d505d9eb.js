@@ -8,7 +8,7 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/Mealplan/favicon.ico"
   },
   {
-    "revision": "3b2495bc4c30251eaa53bdb74337f9be",
+    "revision": "294f2b4bb1b941a703216dcf9e1a771d",
     "url": "/Mealplan/index.html"
   },
   {
@@ -16,16 +16,16 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/Mealplan/logo.svg"
   },
   {
-    "revision": "fb26df11bff542a1431145ed19252c7b",
-    "url": "/Mealplan/plan/index.html"
+    "revision": "1c82903c2994c2507b385b9042bbfac5",
+    "url": "/Mealplan/manifest.json"
   },
   {
-    "revision": "d61520dc0aa2f7a6a78f",
+    "revision": "88646e8110405c3a3b28",
     "url": "/Mealplan/static/css/main.5216141e.chunk.css"
   },
   {
-    "revision": "d61520dc0aa2f7a6a78f",
-    "url": "/Mealplan/static/js/main.d61520dc.chunk.js"
+    "revision": "88646e8110405c3a3b28",
+    "url": "/Mealplan/static/js/main.88646e81.chunk.js"
   },
   {
     "revision": "ff9be7f33e5e4f3370cd",
