@@ -1,6 +1,5 @@
-module Planner exposing (main)
+module Planner exposing (Model, Msg, init, update, view)
 
-import Browser
 import Console
 import Dict exposing (Dict)
 import File exposing (File)
@@ -21,11 +20,11 @@ type alias Model =
     }
 
 
-init : ( Model, Cmd Msg )
+init : Model
 init =
-    ( { recipes = [], enteredQuantities = Dict.empty }
-    , Cmd.none
-    )
+    { recipes = []
+    , enteredQuantities = Dict.empty
+    }
 
 
 type Msg
@@ -148,16 +147,6 @@ viewIngredient ( ingredient, quantities, enteredQuantity ) =
             ]
             []
         ]
-
-
-main : Program () Model Msg
-main =
-    Browser.element
-        { view = view
-        , init = \_ -> init
-        , update = update
-        , subscriptions = always Sub.none
-        }
 
 
 type alias QuanitityForRecipe =

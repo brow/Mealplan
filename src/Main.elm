@@ -4,6 +4,7 @@ import Browser
 import Browser.Navigation as Navigation
 import Html as H
 import Html.Attributes as A
+import Planner
 import Shopper
 import Url
 import Url.Parser as Parser exposing ((</>), Parser)
@@ -36,6 +37,7 @@ main =
 type alias Model =
     { key : Navigation.Key
     , page : Page
+    , plan : Planner.Model
     , shop : Shopper.Model
     }
 
@@ -66,7 +68,7 @@ view model =
         [ viewNav
         , case model.page of
             Plan ->
-                H.div [] []
+                Planner.view model.plan |> H.map PlanMsg
 
             Shop ->
                 Shopper.view model.shop |> H.map ShopMsg
@@ -99,6 +101,7 @@ init _ url key =
     stepUrl url
         { key = key
         , page = NotFound
+        , plan = Planner.init
         , shop = Shopper.init
         }
 
@@ -110,6 +113,7 @@ init _ url key =
 type Msg
     = LinkClicked Browser.UrlRequest
     | UrlChanged Url.Url
+    | PlanMsg Planner.Msg
     | ShopMsg Shopper.Msg
 
 
@@ -138,6 +142,15 @@ update message model =
             in
             ( { model | shop = shopModel }
             , Cmd.map ShopMsg cmd
+            )
+
+        PlanMsg planMessage ->
+            let
+                ( planModel, cmd ) =
+                    Planner.update planMessage model.plan
+            in
+            ( { model | plan = planModel }
+            , Cmd.map PlanMsg cmd
             )
 
 
