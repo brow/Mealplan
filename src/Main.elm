@@ -66,6 +66,19 @@ view model =
                     ( "Not Found"
                     , H.div [] []
                     )
+
+        viewTab page =
+            let
+                attrs =
+                    if model.page == Just page then
+                        [ A.class "active" ]
+
+                    else
+                        []
+            in
+            H.a
+                ([ A.href (Page.path page) ] ++ attrs)
+                [ H.text (Page.title page) ]
     in
     { title = title
     , body =
@@ -86,13 +99,6 @@ view model =
             ]
         ]
     }
-
-
-viewTab : Page -> H.Html msg
-viewTab page =
-    H.a
-        [ A.href (Page.path page) ]
-        [ H.text (Page.title page) ]
 
 
 
