@@ -36,7 +36,7 @@ main =
 
 type alias Model =
     { key : Navigation.Key
-    , page : Page
+    , page : Maybe Page
     , plan : Page.Plan.Model
     , shop : Page.Shop.Model
     }
@@ -45,7 +45,6 @@ type alias Model =
 type Page
     = Plan
     | Shop
-    | NotFound
 
 
 
@@ -57,17 +56,17 @@ view model =
     let
         ( title, content ) =
             case model.page of
-                Plan ->
+                Just Plan ->
                     ( "Plan"
                     , Page.Plan.view model.plan |> H.map PlanMsg
                     )
 
-                Shop ->
+                Just Shop ->
                     ( "Shop"
                     , Page.Shop.view model.shop |> H.map ShopMsg
                     )
 
-                NotFound ->
+                Nothing ->
                     ( "Not Found"
                     , H.div [] []
                     )
@@ -85,13 +84,13 @@ view model =
                     [ H.text "Shop" ]
                 ]
             , case model.page of
-                Plan ->
+                Just Plan ->
                     Page.Plan.view model.plan |> H.map PlanMsg
 
-                Shop ->
+                Just Shop ->
                     Page.Shop.view model.shop |> H.map ShopMsg
 
-                NotFound ->
+                Nothing ->
                     H.div [] []
             ]
         ]
@@ -106,7 +105,7 @@ init : () -> Url.Url -> Navigation.Key -> ( Model, Cmd msg )
 init _ url key =
     stepUrl url
         { key = key
-        , page = NotFound
+        , page = Nothing
         , plan = Page.Plan.init
         , shop = Page.Shop.init
         }
@@ -166,23 +165,15 @@ stepUrl url model =
         parser =
             Parser.oneOf
                 [ route (Parser.s "plan")
-                    ( { model | page = Plan }, Cmd.none )
+                    ( { model | page = Just Plan }, Cmd.none )
                 , route (Parser.s "shop")
-                    ( { model | page = Shop }, Cmd.none )
+                    ( { model | page = Just Shop }, Cmd.none )
                 , route Parser.top
-                    ( { model | page = NotFound }
-                    , Navigation.replaceUrl model.key "plan"
-                    )
+                    ( model, Navigation.replaceUrl model.key "plan" )
                 ]
     in
-    case Parser.parse parser url of
-        Just answer ->
-            answer
-
-        Nothing ->
-            ( { model | page = NotFound }
-            , Cmd.none
-            )
+    Parser.parse parser url
+        |> Maybe.withDefault ( { model | page = Nothing }, Cmd.none )
 
 
 route : Parser a b -> a -> Parser (b -> c) c
