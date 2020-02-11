@@ -92,12 +92,22 @@ update msg model =
 
 view : Model -> H.Html Msg
 view model =
-    H.div []
-        [ viewRecipes model.recipes
-        , viewIngredients
-            (collectIngredients model.recipes)
-            model.enteredQuantities
-        ]
+    let
+        quantitiesForIngredient =
+            collectIngredients model.recipes
+    in
+    H.div [] <|
+        List.filterMap identity <|
+            [ Just (viewRecipes model.recipes)
+            , if Dict.isEmpty quantitiesForIngredient then
+                Nothing
+
+              else
+                Just <|
+                    viewIngredients
+                        quantitiesForIngredient
+                        model.enteredQuantities
+            ]
 
 
 viewRecipes : List Recipe -> H.Html Msg
