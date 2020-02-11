@@ -112,12 +112,20 @@ view model =
 
 viewRecipes : List Recipe -> H.Html Msg
 viewRecipes recipes =
+    let
+        isEmpty =
+            List.isEmpty recipes
+    in
     H.section []
         [ H.h2 [] [ H.text "Recipes" ]
-        , recipes
-            |> List.sortBy .title
-            |> List.map (\recipe -> H.li [] [ H.text recipe.title ])
-            |> H.ul []
+        , if isEmpty then
+            H.div [] [ H.text "Add the recipes for this week." ]
+
+          else
+            recipes
+                |> List.sortBy .title
+                |> List.map (\recipe -> H.li [] [ H.text recipe.title ])
+                |> H.ul []
         , H.button
             [ H.type_ "button"
             , H.onClick Import
