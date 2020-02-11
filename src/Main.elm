@@ -165,10 +165,14 @@ stepUrl url model =
     let
         parser =
             Parser.oneOf
-                [ route (Parser.oneOf [ Parser.top, Parser.s "plan" ])
+                [ route (Parser.s "plan")
                     ( { model | page = Plan }, Cmd.none )
                 , route (Parser.s "shop")
                     ( { model | page = Shop }, Cmd.none )
+                , route Parser.top
+                    ( { model | page = NotFound }
+                    , Navigation.replaceUrl model.key "plan"
+                    )
                 ]
     in
     case Parser.parse parser url of
