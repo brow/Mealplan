@@ -94,27 +94,9 @@ view : Model -> H.Html Msg
 view model =
     H.div []
         [ viewRecipes model.recipes
-        , H.section []
-            [ H.h2 [] [ H.text "Ingredients" ]
-            , collectIngredients model.recipes
-                |> Dict.toList
-                |> List.sortBy Tuple.first
-                |> List.map
-                    (\( name, quantities ) ->
-                        ( name
-                        , quantities
-                        , Dict.get name model.enteredQuantities
-                            |> Maybe.withDefault ""
-                        )
-                    )
-                |> List.map viewIngredient
-                |> H.ul [ H.class "toplevel" ]
-            , H.button
-                [ H.type_ "button"
-                , H.onClick Export
-                ]
-                [ H.text "Export List" ]
-            ]
+        , viewIngredients
+            (collectIngredients model.recipes)
+            model.enteredQuantities
         ]
 
 
@@ -131,6 +113,30 @@ viewRecipes recipes =
             , H.onClick Import
             ]
             [ H.text "Import" ]
+        ]
+
+
+viewIngredients : Dict String (List QuanitityForRecipe) -> Dict String String -> H.Html Msg
+viewIngredients quantitiesForIngredient enteredQuantities =
+    H.section []
+        [ H.h2 [] [ H.text "Ingredients" ]
+        , quantitiesForIngredient
+            |> Dict.toList
+            |> List.sortBy Tuple.first
+            |> List.map
+                (\( name, quantities ) ->
+                    ( name
+                    , quantities
+                    , Dict.get name enteredQuantities |> Maybe.withDefault ""
+                    )
+                )
+            |> List.map viewIngredient
+            |> H.ul [ H.class "toplevel" ]
+        , H.button
+            [ H.type_ "button"
+            , H.onClick Export
+            ]
+            [ H.text "Export List" ]
         ]
 
 
