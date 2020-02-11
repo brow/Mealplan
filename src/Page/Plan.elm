@@ -93,8 +93,36 @@ update msg model =
 view : Model -> H.Html Msg
 view model =
     H.div []
+        [ viewRecipes model.recipes
+        , H.section []
+            [ H.h2 [] [ H.text "Ingredients" ]
+            , collectIngredients model.recipes
+                |> Dict.toList
+                |> List.sortBy Tuple.first
+                |> List.map
+                    (\( name, quantities ) ->
+                        ( name
+                        , quantities
+                        , Dict.get name model.enteredQuantities
+                            |> Maybe.withDefault ""
+                        )
+                    )
+                |> List.map viewIngredient
+                |> H.ul [ H.class "toplevel" ]
+            , H.button
+                [ H.type_ "button"
+                , H.onClick Export
+                ]
+                [ H.text "Export List" ]
+            ]
+        ]
+
+
+viewRecipes : List Recipe -> H.Html Msg
+viewRecipes recipes =
+    H.section []
         [ H.h2 [] [ H.text "Recipes" ]
-        , model.recipes
+        , recipes
             |> List.sortBy .title
             |> List.map (\recipe -> H.li [] [ H.text recipe.title ])
             |> H.ul []
@@ -103,25 +131,6 @@ view model =
             , H.onClick Import
             ]
             [ H.text "Import" ]
-        , H.h2 [] [ H.text "Ingredients" ]
-        , collectIngredients model.recipes
-            |> Dict.toList
-            |> List.sortBy Tuple.first
-            |> List.map
-                (\( name, quantities ) ->
-                    ( name
-                    , quantities
-                    , Dict.get name model.enteredQuantities
-                        |> Maybe.withDefault ""
-                    )
-                )
-            |> List.map viewIngredient
-            |> H.ul [ H.class "toplevel" ]
-        , H.button
-            [ H.type_ "button"
-            , H.onClick Export
-            ]
-            [ H.text "Export List" ]
         ]
 
 
