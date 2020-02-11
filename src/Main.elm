@@ -4,6 +4,7 @@ import Browser
 import Browser.Navigation as Navigation
 import Html as H
 import Html.Attributes as A
+import Page exposing (Page)
 import Page.Plan
 import Page.Shop
 import Url
@@ -42,11 +43,6 @@ type alias Model =
     }
 
 
-type Page
-    = Plan
-    | Shop
-
-
 
 -- VIEW
 
@@ -56,12 +52,12 @@ view model =
     let
         ( title, content ) =
             case model.page of
-                Just Plan ->
+                Just Page.Plan ->
                     ( "Plan"
                     , Page.Plan.view model.plan |> H.map PlanMsg
                     )
 
-                Just Shop ->
+                Just Page.Shop ->
                     ( "Shop"
                     , Page.Shop.view model.shop |> H.map ShopMsg
                     )
@@ -77,17 +73,17 @@ view model =
             [ A.class "container" ]
             [ H.nav [ A.class "tabs is-full" ]
                 [ H.a
-                    [ A.href "plan" ]
+                    [ A.href (Page.path Page.Plan) ]
                     [ H.text "Plan" ]
                 , H.a
-                    [ A.href "shop" ]
+                    [ A.href (Page.path Page.Shop) ]
                     [ H.text "Shop" ]
                 ]
             , case model.page of
-                Just Plan ->
+                Just Page.Plan ->
                     Page.Plan.view model.plan |> H.map PlanMsg
 
-                Just Shop ->
+                Just Page.Shop ->
                     Page.Shop.view model.shop |> H.map ShopMsg
 
                 Nothing ->
@@ -164,12 +160,16 @@ stepUrl url model =
     let
         parser =
             Parser.oneOf
-                [ route (Parser.s "plan")
-                    ( { model | page = Just Plan }, Cmd.none )
-                , route (Parser.s "shop")
-                    ( { model | page = Just Shop }, Cmd.none )
+                [ route (Parser.s (Page.path Page.Plan))
+                    ( { model | page = Just Page.Plan }, Cmd.none )
+                , route (Parser.s (Page.path Page.Shop))
+                    ( { model | page = Just Page.Shop }, Cmd.none )
+
+                -- The root path redirects to Plan
                 , route Parser.top
-                    ( model, Navigation.replaceUrl model.key "plan" )
+                    ( model
+                    , Navigation.replaceUrl model.key (Page.path Page.Plan)
+                    )
                 ]
     in
     Parser.parse parser url
