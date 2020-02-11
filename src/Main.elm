@@ -53,12 +53,12 @@ view model =
         ( title, content ) =
             case model.page of
                 Just Page.Plan ->
-                    ( "Plan"
+                    ( Page.title Page.Plan
                     , Page.Plan.view model.plan |> H.map PlanMsg
                     )
 
                 Just Page.Shop ->
-                    ( "Shop"
+                    ( Page.title Page.Shop
                     , Page.Shop.view model.shop |> H.map ShopMsg
                     )
 
@@ -74,10 +74,10 @@ view model =
             [ H.nav [ A.class "tabs is-full" ]
                 [ H.a
                     [ A.href (Page.path Page.Plan) ]
-                    [ H.text "Plan" ]
+                    [ H.text (Page.title Page.Plan) ]
                 , H.a
                     [ A.href (Page.path Page.Shop) ]
-                    [ H.text "Shop" ]
+                    [ H.text (Page.title Page.Shop) ]
                 ]
             , case model.page of
                 Just Page.Plan ->

@@ -1,4 +1,4 @@
-module Page exposing (Page(..), path)
+module Page exposing (Page(..), path, title)
 
 
 type Page
@@ -14,3 +14,13 @@ path page =
 
         Shop ->
             "shop"
+
+
+title : Page -> String
+title page =
+    case page of
+        Plan ->
+            "Plan"
+
+        Shop ->
+            "Shop"
