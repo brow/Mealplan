@@ -1,4 +1,4 @@
-module Page exposing (Page(..), path, title)
+module Page exposing (Page(..), allPages, path, title)
 
 
 type Page
@@ -24,3 +24,8 @@ title page =
 
         Shop ->
             "Shop"
+
+
+allPages : List Page
+allPages =
+    [ Plan, Shop ]

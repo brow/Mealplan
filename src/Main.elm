@@ -71,10 +71,9 @@ view model =
     , body =
         [ H.div
             [ A.class "container" ]
-            [ H.nav [ A.class "tabs is-full" ]
-                [ viewTab Page.Plan
-                , viewTab Page.Shop
-                ]
+            [ H.nav
+                [ A.class "tabs is-full" ]
+                (List.map viewTab Page.allPages)
             , case model.page of
                 Just Page.Plan ->
                     Page.Plan.view model.plan |> H.map PlanMsg
@@ -166,16 +165,16 @@ stepUrl url model =
                 ( { model | page = Just page }, Cmd.none )
 
         parser =
-            Parser.oneOf
-                [ routeFor Page.Plan
-                , routeFor Page.Shop
-
-                -- The root path redirects to Plan
-                , route Parser.top
-                    ( model
-                    , Navigation.replaceUrl model.key (Page.path Page.Plan)
-                    )
-                ]
+            Parser.oneOf <|
+                List.map routeFor Page.allPages
+                    -- The root path redirects to Plan
+                    ++ [ route Parser.top
+                            ( model
+                            , Navigation.replaceUrl
+                                model.key
+                                (Page.path Page.Plan)
+                            )
+                       ]
     in
     Parser.parse parser url
         |> Maybe.withDefault ( { model | page = Nothing }, Cmd.none )
