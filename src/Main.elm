@@ -4,8 +4,8 @@ import Browser
 import Browser.Navigation as Navigation
 import Html as H
 import Html.Attributes as A
-import Planner
-import Shopper
+import Page.Plan
+import Page.Shop
 import Url
 import Url.Parser as Parser exposing ((</>), Parser)
 
@@ -37,8 +37,8 @@ main =
 type alias Model =
     { key : Navigation.Key
     , page : Page
-    , plan : Planner.Model
-    , shop : Shopper.Model
+    , plan : Page.Plan.Model
+    , shop : Page.Shop.Model
     }
 
 
@@ -59,12 +59,12 @@ view model =
             case model.page of
                 Plan ->
                     ( "Plan"
-                    , Planner.view model.plan |> H.map PlanMsg
+                    , Page.Plan.view model.plan |> H.map PlanMsg
                     )
 
                 Shop ->
                     ( "Shop"
-                    , Shopper.view model.shop |> H.map ShopMsg
+                    , Page.Shop.view model.shop |> H.map ShopMsg
                     )
 
                 NotFound ->
@@ -86,10 +86,10 @@ view model =
                 ]
             , case model.page of
                 Plan ->
-                    Planner.view model.plan |> H.map PlanMsg
+                    Page.Plan.view model.plan |> H.map PlanMsg
 
                 Shop ->
-                    Shopper.view model.shop |> H.map ShopMsg
+                    Page.Shop.view model.shop |> H.map ShopMsg
 
                 NotFound ->
                     H.div [] []
@@ -107,8 +107,8 @@ init _ url key =
     stepUrl url
         { key = key
         , page = NotFound
-        , plan = Planner.init
-        , shop = Shopper.init
+        , plan = Page.Plan.init
+        , shop = Page.Shop.init
         }
 
 
@@ -119,8 +119,8 @@ init _ url key =
 type Msg
     = LinkClicked Browser.UrlRequest
     | UrlChanged Url.Url
-    | PlanMsg Planner.Msg
-    | ShopMsg Shopper.Msg
+    | PlanMsg Page.Plan.Msg
+    | ShopMsg Page.Shop.Msg
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -144,7 +144,7 @@ update message model =
         ShopMsg shopMessage ->
             let
                 ( shopModel, cmd ) =
-                    Shopper.update shopMessage model.shop
+                    Page.Shop.update shopMessage model.shop
             in
             ( { model | shop = shopModel }
             , Cmd.map ShopMsg cmd
@@ -153,7 +153,7 @@ update message model =
         PlanMsg planMessage ->
             let
                 ( planModel, cmd ) =
-                    Planner.update planMessage model.plan
+                    Page.Plan.update planMessage model.plan
             in
             ( { model | plan = planModel }
             , Cmd.map PlanMsg cmd

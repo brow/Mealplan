@@ -1,4 +1,4 @@
-module Shopper exposing (Model, Msg, init, update, view)
+module Page.Shop exposing (Model, Msg, init, update, view)
 
 import Console
 import Dict exposing (Dict)
