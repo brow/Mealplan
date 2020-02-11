@@ -72,12 +72,8 @@ view model =
         [ H.div
             [ A.class "container" ]
             [ H.nav [ A.class "tabs is-full" ]
-                [ H.a
-                    [ A.href (Page.path Page.Plan) ]
-                    [ H.text (Page.title Page.Plan) ]
-                , H.a
-                    [ A.href (Page.path Page.Shop) ]
-                    [ H.text (Page.title Page.Shop) ]
+                [ viewTab Page.Plan
+                , viewTab Page.Shop
                 ]
             , case model.page of
                 Just Page.Plan ->
@@ -91,6 +87,13 @@ view model =
             ]
         ]
     }
+
+
+viewTab : Page -> H.Html msg
+viewTab page =
+    H.a
+        [ A.href (Page.path page) ]
+        [ H.text (Page.title page) ]
 
 
 
@@ -158,12 +161,14 @@ update message model =
 stepUrl : Url.Url -> Model -> ( Model, Cmd msg )
 stepUrl url model =
     let
+        routeFor page =
+            route (Parser.s (Page.path page))
+                ( { model | page = Just page }, Cmd.none )
+
         parser =
             Parser.oneOf
-                [ route (Parser.s (Page.path Page.Plan))
-                    ( { model | page = Just Page.Plan }, Cmd.none )
-                , route (Parser.s (Page.path Page.Shop))
-                    ( { model | page = Just Page.Shop }, Cmd.none )
+                [ routeFor Page.Plan
+                , routeFor Page.Shop
 
                 -- The root path redirects to Plan
                 , route Parser.top
