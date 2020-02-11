@@ -87,7 +87,7 @@ view model =
             [ H.type_ "button"
             , H.onClick (Import Items)
             ]
-            [ H.text "Import Items" ]
+            [ H.text "Import List" ]
         , H.text " "
         , H.button
             [ H.type_ "button"

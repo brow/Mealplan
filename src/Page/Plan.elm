@@ -129,8 +129,17 @@ viewRecipes recipes =
         , H.button
             [ H.type_ "button"
             , H.onClick Import
+            , H.class <|
+                String.join " " <|
+                    [ "button" ]
+                        ++ (if isEmpty then
+                                [ "primary" ]
+
+                            else
+                                []
+                           )
             ]
-            [ H.text "Import" ]
+            [ H.text "Add Recipes" ]
         ]
 
 
@@ -153,6 +162,7 @@ viewIngredients quantitiesForIngredient enteredQuantities =
         , H.button
             [ H.type_ "button"
             , H.onClick Export
+            , H.class "button primary"
             ]
             [ H.text "Export List" ]
         ]
