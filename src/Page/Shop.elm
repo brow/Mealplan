@@ -90,7 +90,7 @@ view model =
             Dict.isEmpty model.sources
     in
     H.div [] <|
-        List.filterMap identity
+        values
             [ Just <|
                 H.h2 [] [ H.text "Shopping list" ]
             , when itemsAreEmpty <|
@@ -102,9 +102,15 @@ view model =
                     , H.text "."
                     ]
             , Just <|
-                viewButton "Import List" (Import Items)
+                viewButton
+                    "Import List"
+                    (Import Items)
+                    itemsAreEmpty
             , when (not itemsAreEmpty) <|
-                viewButton "Import Links" (Import Sources)
+                viewButton
+                    "Import Links"
+                    (Import Sources)
+                    sourcesAreEmpty
             , model.shoppingList.items
                 |> List.sortBy .name
                 |> List.map
@@ -132,6 +138,27 @@ view model =
             ]
 
 
+viewButton : String -> Msg -> Bool -> H.Html Msg
+viewButton title onClick isPrimary =
+    let
+        attributes =
+            values
+                [ Just <|
+                    H.type_ "button"
+                , Just <|
+                    H.onClick onClick
+                , when isPrimary <|
+                    H.class "button primary"
+                ]
+    in
+    H.button attributes [ H.text title ]
+
+
+values : List (Maybe a) -> List a
+values =
+    List.filterMap identity
+
+
 when : Bool -> a -> Maybe a
 when condition value =
     if condition then
@@ -139,12 +166,3 @@ when condition value =
 
     else
         Nothing
-
-
-viewButton : String -> Msg -> H.Html Msg
-viewButton title onClick =
-    H.button
-        [ H.type_ "button"
-        , H.onClick onClick
-        ]
-        [ H.text title ]
