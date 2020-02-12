@@ -82,41 +82,63 @@ update msg model =
 
 view : Model -> H.Html Msg
 view model =
-    H.div []
-        [ H.h2 [] [ H.text "Shopping list" ]
-        , H.div []
-            [ H.text "View a list you exported from "
-            , H.a
-                [ H.href (Page.path Page.Plan) ]
-                [ H.text (Page.title Page.Plan) ]
-            , H.text "."
-            ]
-        , viewButton "Import List" (Import Items)
-        , viewButton "Import Links" (Import Sources)
-        , model.shoppingList.items
-            |> List.sortBy .name
-            |> List.map
-                (\item ->
-                    H.li
-                        []
-                        [ H.b []
-                            [ let
-                                text =
-                                    H.text item.name
-                              in
-                              case Dict.get item.name model.sources of
-                                Just url ->
-                                    H.a [ H.href url ] [ text ]
+    let
+        itemsAreEmpty =
+            List.isEmpty model.shoppingList.items
 
-                                Nothing ->
-                                    text
+        sourcesAreEmpty =
+            Dict.isEmpty model.sources
+    in
+    H.div [] <|
+        List.filterMap identity
+            [ Just <|
+                H.h2 [] [ H.text "Shopping list" ]
+            , when itemsAreEmpty <|
+                H.div []
+                    [ H.text "View a list you exported from "
+                    , H.a
+                        [ H.href (Page.path Page.Plan) ]
+                        [ H.text (Page.title Page.Plan) ]
+                    , H.text "."
+                    ]
+            , Just <|
+                viewButton "Import List" (Import Items)
+            , when (not itemsAreEmpty) <|
+                viewButton "Import Links" (Import Sources)
+            , model.shoppingList.items
+                |> List.sortBy .name
+                |> List.map
+                    (\item ->
+                        H.li
+                            []
+                            [ H.b []
+                                [ let
+                                    text =
+                                        H.text item.name
+                                  in
+                                  case Dict.get item.name model.sources of
+                                    Just url ->
+                                        H.a [ H.href url ] [ text ]
+
+                                    Nothing ->
+                                        text
+                                ]
+                            , H.text ", "
+                            , H.text item.quantity
                             ]
-                        , H.text ", "
-                        , H.text item.quantity
-                        ]
-                )
-            |> H.ul []
-        ]
+                    )
+                |> H.ul []
+                |> Just
+            ]
+
+
+when : Bool -> a -> Maybe a
+when condition value =
+    if condition then
+        Just value
+
+    else
+        Nothing
 
 
 viewButton : String -> Msg -> H.Html Msg
