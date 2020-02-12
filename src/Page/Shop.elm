@@ -91,17 +91,8 @@ view model =
                 [ H.text (Page.title Page.Plan) ]
             , H.text "."
             ]
-        , H.button
-            [ H.type_ "button"
-            , H.onClick (Import Items)
-            ]
-            [ H.text "Import List" ]
-        , H.text " "
-        , H.button
-            [ H.type_ "button"
-            , H.onClick (Import Sources)
-            ]
-            [ H.text "Import Links" ]
+        , viewButton "Import List" (Import Items)
+        , viewButton "Import Links" (Import Sources)
         , model.shoppingList.items
             |> List.sortBy .name
             |> List.map
@@ -126,3 +117,12 @@ view model =
                 )
             |> H.ul []
         ]
+
+
+viewButton : String -> Msg -> H.Html Msg
+viewButton title onClick =
+    H.button
+        [ H.type_ "button"
+        , H.onClick onClick
+        ]
+        [ H.text title ]
