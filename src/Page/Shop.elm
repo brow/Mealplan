@@ -7,6 +7,7 @@ import File.Select
 import Html as H
 import Html.Attributes as H
 import Html.Events as H
+import Page
 import Serialize
 import ShoppingList exposing (ShoppingList)
 import Task
@@ -83,6 +84,13 @@ view : Model -> H.Html Msg
 view model =
     H.div []
         [ H.h2 [] [ H.text "Shopping list" ]
+        , H.div []
+            [ H.text "View a list you exported from "
+            , H.a
+                [ H.href (Page.path Page.Plan) ]
+                [ H.text (Page.title Page.Plan) ]
+            , H.text "."
+            ]
         , H.button
             [ H.type_ "button"
             , H.onClick (Import Items)
