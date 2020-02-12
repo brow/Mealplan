@@ -1,6 +1,5 @@
 module Page.Plan exposing (Model, Msg, init, update, view)
 
-import Console
 import Dict exposing (Dict)
 import File exposing (File)
 import File.Download
@@ -8,6 +7,7 @@ import File.Select
 import Html as H
 import Html.Attributes as H
 import Html.Events as H
+import Port
 import Recipe exposing (Recipe)
 import Serialize
 import Set
@@ -57,7 +57,7 @@ update msg model =
                     ( { model | recipes = recipe :: model.recipes }, Cmd.none )
 
                 Err error ->
-                    ( model, Console.error error )
+                    ( model, Port.error error )
 
         ChangeQuantity ingredientName newQuantity ->
             ( { model

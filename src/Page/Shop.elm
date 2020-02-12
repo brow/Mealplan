@@ -1,6 +1,5 @@
 module Page.Shop exposing (Model, Msg, init, update, view)
 
-import Console
 import Dict exposing (Dict)
 import File exposing (File)
 import File.Select
@@ -8,6 +7,7 @@ import Html as H
 import Html.Attributes as H
 import Html.Events as H
 import Page
+import Port
 import Serialize
 import ShoppingList exposing (ShoppingList)
 import Task
@@ -62,7 +62,7 @@ update msg model =
                             )
 
                         Err error ->
-                            ( model, Console.error error )
+                            ( model, Port.error error )
 
                 Sources ->
                     case Serialize.shoppingListSourcesFromString content of
@@ -77,7 +77,7 @@ update msg model =
                             )
 
                         Err error ->
-                            ( model, Console.error error )
+                            ( model, Port.error error )
 
 
 view : Model -> H.Html Msg

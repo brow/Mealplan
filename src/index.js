@@ -4,8 +4,8 @@ import registerServiceWorker from './registerServiceWorker';
 
 var app = Elm.Main.init();
 
-// app.ports.error.subscribe(function(error) {
-//     console.error(error);
-// });
+app.ports.error.subscribe(function(error) {
+    alert(error);
+});
 
 registerServiceWorker();
