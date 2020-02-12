@@ -8,10 +8,11 @@
   "vendors~main.js.map": "/static/js/vendors~main.3ca81432.chunk.js.map",
   "./service-worker.js": "/./service-worker.js",
   "404.html": "/404.html",
+  "CNAME": "/CNAME",
   "chota.min.css": "/chota.min.css",
   "favicon.ico": "/favicon.ico",
   "index.html": "/index.html",
   "logo.svg": "/logo.svg",
   "manifest.json": "/manifest.json",
-  "precache-manifest.4e68e001e3102a23fcb12050353f5a8c.js": "/precache-manifest.4e68e001e3102a23fcb12050353f5a8c.js"
+  "precache-manifest.4e70140b300db0550d8b85d840feaff4.js": "/precache-manifest.4e70140b300db0550d8b85d840feaff4.js"
 }

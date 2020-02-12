@@ -4,6 +4,10 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/404.html"
   },
   {
+    "revision": "340f4da8f1333be1abb04bdbfeb4715f",
+    "url": "/CNAME"
+  },
+  {
     "revision": "3fda693f467dc86b567ea734feef536e",
     "url": "/chota.min.css"
   },
