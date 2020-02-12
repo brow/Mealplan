@@ -12,6 +12,7 @@ import Recipe exposing (Recipe)
 import Serialize
 import Set
 import Task
+import View
 
 
 type alias Model =
@@ -126,20 +127,10 @@ viewRecipes recipes =
                 |> List.sortBy .title
                 |> List.map (\recipe -> H.li [] [ H.text recipe.title ])
                 |> H.ul []
-        , H.button
-            [ H.type_ "button"
-            , H.onClick Import
-            , H.class <|
-                String.join " " <|
-                    [ "button" ]
-                        ++ (if isEmpty then
-                                [ "primary" ]
-
-                            else
-                                []
-                           )
-            ]
-            [ H.text "Add Recipes" ]
+        , View.button
+            "Add Recipes"
+            Import
+            isEmpty
         ]
 
 
@@ -159,12 +150,10 @@ viewIngredients quantitiesForIngredient enteredQuantities =
                 )
             |> List.map viewIngredient
             |> H.ul [ H.class "toplevel" ]
-        , H.button
-            [ H.type_ "button"
-            , H.onClick Export
-            , H.class "button primary"
-            ]
-            [ H.text "Export List" ]
+        , View.button
+            "Export List"
+            Export
+            True
         ]
 
 

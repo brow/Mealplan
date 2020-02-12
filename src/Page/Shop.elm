@@ -1,6 +1,7 @@
 module Page.Shop exposing (Model, Msg, init, update, view)
 
 import Dict exposing (Dict)
+import Extra.Maybe as Maybe
 import File exposing (File)
 import File.Select
 import Html as H
@@ -11,6 +12,7 @@ import Port
 import Serialize
 import ShoppingList exposing (ShoppingList)
 import Task
+import View
 
 
 type alias Model =
@@ -90,10 +92,10 @@ view model =
             Dict.isEmpty model.sources
     in
     H.div [] <|
-        values
+        Maybe.values
             [ Just <|
                 H.h2 [] [ H.text "Shopping list" ]
-            , when itemsAreEmpty <|
+            , Maybe.when itemsAreEmpty <|
                 H.div []
                     [ H.text "View a list you exported from "
                     , H.a
@@ -102,12 +104,12 @@ view model =
                     , H.text "."
                     ]
             , Just <|
-                viewButton
+                View.button
                     "Import List"
                     (Import Items)
                     itemsAreEmpty
-            , when (not itemsAreEmpty) <|
-                viewButton
+            , Maybe.when (not itemsAreEmpty) <|
+                View.button
                     "Import Links"
                     (Import Sources)
                     sourcesAreEmpty
@@ -136,33 +138,3 @@ view model =
                 |> H.ul []
                 |> Just
             ]
-
-
-viewButton : String -> Msg -> Bool -> H.Html Msg
-viewButton title onClick isPrimary =
-    let
-        attributes =
-            values
-                [ Just <|
-                    H.type_ "button"
-                , Just <|
-                    H.onClick onClick
-                , when isPrimary <|
-                    H.class "button primary"
-                ]
-    in
-    H.button attributes [ H.text title ]
-
-
-values : List (Maybe a) -> List a
-values =
-    List.filterMap identity
-
-
-when : Bool -> a -> Maybe a
-when condition value =
-    if condition then
-        Just value
-
-    else
-        Nothing
