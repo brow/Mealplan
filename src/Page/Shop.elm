@@ -93,7 +93,7 @@ view model =
             [ H.type_ "button"
             , H.onClick (Import Sources)
             ]
-            [ H.text "Import Sources" ]
+            [ H.text "Import Links" ]
         , model.shoppingList.items
             |> List.sortBy .name
             |> List.map
