@@ -13,5 +13,8 @@ var app = Elm.Main.init();
 app.ports.error.subscribe(function(error) {
     alert(error);
 });
+app.ports.urlToOpen.subscribe(function(url) {
+    window.open(url, "_blank");
+});
 
 registerServiceWorker();

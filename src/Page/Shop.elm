@@ -37,11 +37,21 @@ type Msg
     = Import InputType
     | SelectedFile InputType File
     | LoadedFileContent InputType String
+    | OpenAllInTabs
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
+        OpenAllInTabs ->
+            ( model
+            , model.shoppingList.items
+                |> List.map (\item -> item.name)
+                |> List.filterMap (\name -> Dict.get name model.sources)
+                |> List.map Port.urlToOpen
+                |> Cmd.batch
+            )
+
         Import inputType ->
             ( model
             , File.Select.file [] (SelectedFile inputType)
@@ -113,6 +123,11 @@ view model =
                     "Import Links"
                     (Import Sources)
                     sourcesAreEmpty
+            , Maybe.when (not sourcesAreEmpty) <|
+                View.button
+                    "Open in Tabs"
+                    OpenAllInTabs
+                    True
             , model.shoppingList.items
                 |> List.sortBy .name
                 |> List.map
