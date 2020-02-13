@@ -180,6 +180,7 @@ viewIngredient ( ingredient, quantities, enteredQuantity ) =
             |> H.table []
         , H.input
             [ H.value enteredQuantity
+            , H.class "quantity"
             , H.onInput (ChangeQuantity ingredient)
             ]
             []

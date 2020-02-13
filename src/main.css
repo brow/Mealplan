@@ -60,19 +60,19 @@ table {
 }
 
 td {
-    padding: 0.2rem 0.4rem;
+    padding: 0.5em 1em;
     vertical-align: top;
 }
 
 td.quantity {
-    width: 9rem;
+    width: 10rem;
     font-weight: bold;
-    padding-left: 1rem;
 }
 
-input {
+input.quantity {
     font-weight: bold;
     margin-top: 0.5em;
+    padding: 0.5em 1em !important;
 }
 
 button {
