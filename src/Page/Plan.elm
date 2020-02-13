@@ -130,7 +130,7 @@ viewRecipes recipes =
             recipes
                 |> List.sortBy .title
                 |> List.map (\recipe -> H.li [] [ H.text recipe.title ])
-                |> H.ul []
+                |> H.ul [ H.class "recipes" ]
         , View.button
             "Add Recipes"
             Import

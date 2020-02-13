@@ -13,6 +13,25 @@
     --grid-maxWidth: 48rem;
 }
 
+section {
+    margin-bottom: 1.5em;
+}
+
+ul.recipes {
+    list-style: none;
+    padding-left: 0em;
+    margin: 0;
+}
+
+ul.recipes li {
+    padding: 1.4rem 0;
+    /* font-weight: 400; */
+}
+
+ul.recipes li:nth-child(n+2) {
+     border-top: 1pt solid lightgrey;
+}
+
 ul.toplevel {
     list-style: none;
     padding-left: 0;
@@ -54,7 +73,7 @@ td.quantity {
 
 input {
     font-weight: bold;
-    margin-top: 0.5em;
+    margin-top: 0.7em;
 }
 
 button {
