@@ -132,14 +132,12 @@ view model =
                 |> List.sortBy .name
                 |> List.map
                     (\item ->
-                        H.li
-                            []
-                            [ H.b []
-                                [ let
-                                    text =
-                                        H.text item.name
-                                  in
-                                  case Dict.get item.name model.sources of
+                        let
+                            text =
+                                H.text item.name
+
+                            link =
+                                case Dict.get item.name model.sources of
                                     Just url ->
                                         H.a
                                             [ H.href url, H.target "_blank" ]
@@ -147,7 +145,9 @@ view model =
 
                                     Nothing ->
                                         text
-                                ]
+                        in
+                        H.li []
+                            [ H.b [] [ link ]
                             , H.text ", "
                             , H.text item.quantity
                             ]
