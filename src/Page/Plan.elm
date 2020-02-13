@@ -164,7 +164,7 @@ viewIngredients quantitiesForIngredient enteredQuantities =
 
 viewIngredient : ( String, List QuanitityForRecipe, String ) -> H.Html Msg
 viewIngredient ( ingredient, quantities, enteredQuantity ) =
-    H.li [ H.class "card" ]
+    H.li []
         [ H.h3 [] [ H.text ingredient ]
         , quantities
             |> List.sortBy .recipeTitle

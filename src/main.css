@@ -25,7 +25,6 @@ ul.recipes {
 
 ul.recipes li {
     padding: 1.4rem 0;
-    /* font-weight: 400; */
 }
 
 ul.recipes li:nth-child(n+2) {
@@ -38,7 +37,7 @@ ul.toplevel {
 }
 
 ul.toplevel li {
-    margin-bottom: 1.4rem;
+    margin-bottom: 0.3em;
     padding-bottom: 1em;
 }
 
@@ -73,7 +72,7 @@ td.quantity {
 
 input {
     font-weight: bold;
-    margin-top: 0.7em;
+    margin-top: 0.5em;
 }
 
 button {
