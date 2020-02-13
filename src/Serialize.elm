@@ -46,9 +46,9 @@ recipe =
 ingredient : Parser Recipe.Ingredient
 ingredient =
     P.succeed Recipe.Ingredient
-        |= string
+        |= stringWithoutCommas
         |. P.token ", "
-        |= string
+        |= stringWithoutCommas
         |= (try <|
                 P.succeed identity
                     |. P.token ", "
@@ -74,7 +74,7 @@ shoppingList =
 shoppingListItem : Parser ShoppingList.Item
 shoppingListItem =
     P.succeed ShoppingList.Item
-        |= string
+        |= stringWithoutCommas
         |. P.token ", "
         |= string
         |. P.chompWhile (\c -> c == '\n')
@@ -96,16 +96,22 @@ shoppingListSources =
 shoppingListSource : Parser ShoppingList.Source
 shoppingListSource =
     P.succeed ShoppingList.Source
-        |= string
+        |= stringWithoutCommas
         |. P.token ", "
         |= string
         |. P.token "\n"
 
 
+stringWithoutCommas : Parser String
+stringWithoutCommas =
+    P.getChompedString <|
+        P.chompWhile (\c -> c /= ',' && c /= '\n')
+
+
 string : Parser String
 string =
     P.getChompedString <|
-        P.chompWhile (\c -> c /= ',' && c /= '\n')
+        P.chompWhile (\c -> c /= '\n')
 
 
 try : Parser a -> Parser (Maybe a)
