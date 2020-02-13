@@ -138,6 +138,7 @@ viewIngredients : Dict String (List QuanitityForRecipe) -> Dict String String ->
 viewIngredients quantitiesForIngredient enteredQuantities =
     H.section []
         [ H.h2 [] [ H.text "Ingredients" ]
+        , H.div [] [ H.text "Enter the amount we need to buy. Leave blank if none." ]
         , quantitiesForIngredient
             |> Dict.toList
             |> List.sortBy Tuple.first
