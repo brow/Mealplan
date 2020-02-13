@@ -31,7 +31,7 @@ init =
 type Msg
     = Import
     | SelectedFiles (List File)
-    | LoadedFileContent String
+    | LoadedFile String String
     | ChangeQuantity String String
     | Export
 
@@ -48,17 +48,21 @@ update msg model =
             ( model
             , files
                 |> List.map
-                    (Task.perform LoadedFileContent << File.toString)
+                    (\file ->
+                        Task.perform
+                            (LoadedFile (File.name file))
+                            (File.toString file)
+                    )
                 |> Cmd.batch
             )
 
-        LoadedFileContent content ->
+        LoadedFile name content ->
             case Serialize.recipeFromString content of
                 Ok recipe ->
                     ( { model | recipes = recipe :: model.recipes }, Cmd.none )
 
                 Err error ->
-                    ( model, Port.error error )
+                    ( model, Port.error (name ++ ": " ++ error) )
 
         ChangeQuantity ingredientName newQuantity ->
             ( { model
