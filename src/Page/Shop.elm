@@ -126,7 +126,9 @@ view model =
                                   in
                                   case Dict.get item.name model.sources of
                                     Just url ->
-                                        H.a [ H.href url ] [ text ]
+                                        H.a
+                                            [ H.href url, H.target "_blank" ]
+                                            [ text ]
 
                                     Nothing ->
                                         text
